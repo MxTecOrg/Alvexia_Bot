@@ -1,0 +1,30 @@
+{
+  "name": "alvexia_text_adventures",
+  "version": "0.0.1",
+  "description": "...",
+  "main": "server.js",
+  "scripts": {
+    "start": "node main.js",
+    "test" : "node main.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.3",
+    "node-telegram-bot-api" : "^0.57.0",
+    "nodemailer": "^6.7.3",
+    "sequelize" : "^6.19.0",
+    "sqlite3" : "^5.0.6"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "url": "https://github.com/MxTecOrg/alvexia_bot"
+  },
+  "license": "MIT",
+  "keywords": [
+    "node",
+    "socket.io",
+    "express"
+  ]
+}
