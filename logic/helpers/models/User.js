@@ -26,7 +26,11 @@ const UserModel = (DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(wallet)
         },
-        referedBy: {
+        referrals: {
+            type: DataTypes.STRING,
+            defaultValue: "[]"
+        },
+        referredBy: {
             type: DataTypes.INTEGER,
             allowNull: true
         },

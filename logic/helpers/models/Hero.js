@@ -83,6 +83,14 @@ const HeroModel = (DataTypes) => {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
+        energy: {
+            type: DataTypes.INTEGER,
+            defaultValue: 10
+        },
+        max_energy: {
+            type: DataTypes.INTEGER,
+            defaultValue: 10
+        },
         class: {
             type: DataTypes.STRING,
             defaultValue: "na"
@@ -138,6 +146,10 @@ const HeroModel = (DataTypes) => {
         quests: {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(quests)
+        },
+        zone: {
+            type: DataTypes.STRING,
+            defaultValue: "t_0_0"
         }
     }
 }

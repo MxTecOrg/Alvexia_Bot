@@ -9,7 +9,7 @@ const menu = async (user_id , chat_id) => {
             keyboard: [
                 [
                     "🌲 Bosque " ,
-                    " Entrenar ⚔️"
+                    " Quests 🗺️"
                 ],
                 [
                     "🏘️ Zona ",
@@ -37,7 +37,13 @@ const menu = async (user_id , chat_id) => {
     
     if(!user || !hero) return bot.sendMessage(chat_id , "Esta cuenta no existe , use el comando /start para crear una.");
     
-    const menu_str = "Prueba de el menu";
+    const menu_str = `👤 Estado 👤
+    
+    ⚡ Energia: ${hero.energy}/${hero.max_energy}
+    🆙 Nivel: ${hero.level} \t\t 🧠 XP: ${hero.xp}/${100}
+    ♥️ Salud: ${100}/${100} \t\t 🔷 Mana: ${100}/${100}
+    🗺️ Zona: ${hero.zone}
+    💫 Acción: ${"attack"}`;
     bot.sendMessage(chat_id , menu_str , opts);
 };
 
@@ -47,3 +53,5 @@ bot.onText(/\/menu/ , async (data) => {
     
     menu(user_id , chat_id);
 });
+
+module.exports = menu;
