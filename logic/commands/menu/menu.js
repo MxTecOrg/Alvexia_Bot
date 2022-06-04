@@ -43,8 +43,7 @@ const menu = async (user_id, chat_id) => {
     
     const attr = hero.getAttrData();
 
-    const menu_str = `👤 Estado 👤
-    ` +
+    const menu_str = "👤 Estado 👤 \n\n" +
     "⚡ Energia: " + hero.energy + "/" + hero.max_energy + "\n" +
     "🆙 Nivel: " + hero.level + " \t\t 🧠 XP: " + hero.xp + "/" + 100 + "\n" +
     "♥️ Salud: " + hero.hp + "/" + attr.stats.hp + " \t\t 🔷 Mana: " + hero.mp + "/" + attr.stats.mp + "\n" +

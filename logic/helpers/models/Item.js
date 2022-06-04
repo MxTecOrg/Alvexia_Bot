@@ -100,6 +100,10 @@ const ItemModel = (DataTypes) => {
         gold_extra: {
             type: DataTypes.INTEGER,
             defaultValue: 0
+        },
+        cost : {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
         }
     }
 }

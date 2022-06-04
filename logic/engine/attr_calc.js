@@ -62,7 +62,7 @@ const updateStats = async (user_id) => {
         }
     }
     
-    for(let s of skills){
+    for(let s of pasives){
         if(s == "na") continue;
     }
     
@@ -72,7 +72,7 @@ const updateStats = async (user_id) => {
         }
     }
     
-    const updt = await Hero.setData({
+    const updt = await hero.setData({
         total_attr : attr,
         stats : stats
     });

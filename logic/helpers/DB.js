@@ -2,13 +2,14 @@ const config = require("../../config.js");
 const { Sequelize, Model, DataTypes, Op } = require("sequelize");
 const UserModel = require("./models/User.js");
 const HeroModel = require("./models/Hero.js");
+const ItemModel = require("./models/Item.js");
 
 /**********************
  * Iniciando Conexion *
  **********************/
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: config.DB + '/db.sqlite',
+    storage: config.DB + '/database.db',
     loggin: false
 });
 
@@ -162,5 +163,6 @@ Item.init(
 module.exports = {
     User,
     Hero,
+    Item,
     Op
 }

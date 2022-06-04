@@ -2,6 +2,7 @@ const config = require("../../../config.js");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const menu = require(config.LOGIC + "/commands/menu/menu.js");
+const {updateStats , fillHeal } = require(config.LOGIC + "/engine/attr_calc.js");
 
 var newUser = {},
     typeReq = {};
@@ -102,12 +103,15 @@ bot.on("callback_query", async (data) => {
                 typeReq[user_id] = "nickname";
                 return bot.sendMessage(chat_id, err_str);
             }
-            delete newUser[user_id];
-            delete typeReq[user_id];
-
+            await updateStats(user_id);
+            await fillHeal(user_id);
+            
             await bot.sendMessage(chat_id, wlc2_1 + newUser[user_id].nickname + wlc2_2);
             await bot.sendMessage(chat_id, wlc3);
             menu(user_id , chat_id);
+            
+            delete newUser[user_id];
+            delete typeReq[user_id];
         }
         break;
         default:
