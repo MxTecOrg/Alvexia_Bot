@@ -1,7 +1,7 @@
 const config = require("../../../config.js");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
-const menu = require(config.LOGIC + "/menu/menu.js");
+const menu = require(config.LOGIC + "/commands/menu/menu.js");
 
 var newUser = {},
     typeReq = {};

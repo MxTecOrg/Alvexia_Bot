@@ -1,9 +1,9 @@
 const attributes = {
-    sta: 0,
-    con: 0,
-    str: 0,
-    agl: 0,
-    int: 0,
+    sta: 10,
+    con: 10,
+    str: 10,
+    agl: 10,
+    int: 10,
     luck: 0
 };
 
@@ -17,6 +17,13 @@ const stats = {
     crit: 0,
     dodge: 0,
     speed: 0,
+    xp_extra: 0,
+    gold_extra: 0
+};
+
+const attr_points = {
+    points: 0,
+    spend : 0
 };
 
 const equip = {
@@ -30,6 +37,39 @@ const equip = {
     gloves: "na",
     boots: "na",
     mount: "na"
+};
+
+const skills = {
+    s_1: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
+    s_2: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
+    s_3: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
+    s_4: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
+    p_1: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
+    p_2: {
+        id: "na",
+        type: "na",
+        cd: 0
+    },
 };
 
 const inventory = {
@@ -52,13 +92,13 @@ const friends = {
     friends: [],
     requests: [],
     invitations: [],
-    ban : []
+    ban: []
 };
 
 const quests = [{
     id: "mq1",
     status: {
-        current : 0,
+        current: 0,
         total: 10
     }
 }]
@@ -108,6 +148,14 @@ const HeroModel = (DataTypes) => {
             defaultValue: JSON.stringify(attributes)
         },
         attr_points: {
+            type: DataTypes.STRING,
+            defaultValue: JSON.stringify(attr_points)
+        },
+        hp: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
+        mp: {
             type: DataTypes.INTEGER,
             defaultValue: 0
         },
@@ -118,6 +166,10 @@ const HeroModel = (DataTypes) => {
         equip: {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(equip)
+        },
+        skills: {
+            type: DataTypes.STRING,
+            defaultValue: JSON.stringify(skills)
         },
         inventory: {
             type: DataTypes.STRING,
