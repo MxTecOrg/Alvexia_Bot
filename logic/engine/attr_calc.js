@@ -97,7 +97,53 @@ const fillHeal = async (user_id) => {
     });
 };
 
+var energyTimer = {} , toEnd = {};
+const ENERGY_REG_TIME = 30 * 60 * 1000;
+const TICK = 1 * 60 * 1000;
+
+const energyReg = async (user_id) => {
+    if(energyTimer[user_id]) return null;
+    
+    const hero = await Hero.findOne({
+        where : {
+            user_id : user_id
+        }
+    });
+    
+    if(!hero) return null;
+    if(hero.energy >= hero.max_energy) return null;
+    
+    toEnd[user_id] = ENERGY_REG_TIME;
+    energyTimer[user_id].setInterval(async () => {
+        toEnd[user_id] -= TICK;
+        if(toEnd[user_id] <= 0) {
+            clearInterval(energyTimer[user_id]);
+            delete energyTimer[user_id];
+            delete toEnd[user_id];
+            
+            const hero = await Hero.findOne({
+                where: {
+                    user_id: user_id
+                }
+            });
+            
+            if(hero.energy < hero.max_energy){
+                await hero.setData({
+                    energy : hero.energy + 1
+                });
+                energyReg(user_id);
+            }
+        }
+    } , TICK);
+};
+
+const getEnergyTime = async (user_id) => {
+    return (toEnd[user_id] ? toEnd[user_id] : null);
+};
+
 module.exports = {
     updateStats,
-    fillHeal
+    fillHeal,
+    energyReg,
+    getEnergyTime
 };

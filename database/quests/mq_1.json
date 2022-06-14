@@ -1,0 +1,19 @@
+{
+    "id" : "mq_1",
+    "name" : "El comienzo.",
+    "type" : "action",
+    "desc" : "En el menu de 🗺️ Quests podras ver las misiones activas y su progreso , al completarlas ganaras recompenzas , tambien puedes acceder a este menu usando el comando /quests. Completa esta misión para continuar.",
+    "rewards" : {
+        "gold": 10,
+        "xp": 20,
+        "item": "",
+        "consumable": "",
+        "material": ""
+    },
+    "goal": {
+        "require": "",
+        "current": 1,
+        "total": 1
+    },
+    "next" : "mq_2"
+}

@@ -76,8 +76,7 @@ const inventory = {
     bags: 1,
     armory: [],
     consumables: [],
-    materials: [],
-    items: []
+    materials: []
 };
 
 const coins = {
@@ -99,9 +98,18 @@ const quests = [{
     id: "mq1",
     status: {
         current: 0,
-        total: 10
+        total: 1
     }
-}]
+}];
+
+const job = {
+    job : "na",
+    level: 0,
+    xp: 0,
+    energy : 5,
+    recipes: []
+}
+
 
 const HeroModel = (DataTypes) => {
     return {
@@ -199,9 +207,17 @@ const HeroModel = (DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(quests)
         },
+        job: {
+            type: DataTypes.STRING,
+            defaultValue: JSON.stringify(job)
+        },
         zone: {
             type: DataTypes.STRING,
             defaultValue: "t_0_0"
+        },
+        status: {
+            type: DataTypes.STRING,
+            defaultValue: "rest"
         }
     }
 }
