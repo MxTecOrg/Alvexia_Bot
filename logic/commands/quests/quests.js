@@ -101,7 +101,9 @@ bot.on("callback_query", async (data) => {
             else aQuest[user_id] -= 1;
             let ac = aQuest[user_id];
             const { msg, opts } = await _quests(user_id);
-            if(pq != ac) bot.editMessage(chat_id , mess_id , msg , opts);
+            opts.chat_id = chat_id;
+            opts.message_id = mess_id;
+            if (pq != ac) bot.editMessageText(msg, opts);
             break;
         case "quest_next":
             let _pq = aQuest[user_id];
@@ -110,7 +112,9 @@ bot.on("callback_query", async (data) => {
             else aQuest[user_id] += 1;
             let _ac = aQuest[user_id];
             const { _msg, _opts } = await _quests(user_id);
-            if (_pq != _ac) bot.editMessage(chat_id, mess_id, _msg, _opts);
+            _opts.chat_id = chat_id;
+            _opts.message_id = mess_id;
+            if (_pq != _ac) bot.editMessageText(_msg, _opts);
             break;
         default:
             break;

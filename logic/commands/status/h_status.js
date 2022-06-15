@@ -116,11 +116,15 @@ bot.on("callback_query", async (data) => {
 
     if(data.data == "stadistics") {
         const {msg , opts} = await stadistics(user_id , chat_id);
-        if(mess_id) bot.editMessage(chat_id , mess_id , msg , opts);
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        if(mess_id) bot.editMessageText(msg , opts);
     }
     
     if (data.data == "hattr") {
         const { msg, opts } = await hstatus(user_id, chat_id);
-        if (mess_id) bot.editMessage(chat_id, mess_id, msg, opts);
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        if (mess_id) bot.editMessageText(msg, opts);
     }
 });
