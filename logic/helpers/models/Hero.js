@@ -96,7 +96,7 @@ const friends = {
 
 const quests = [{
     id: "mq_1",
-    current: 0,
+    current: 1,
     total: 1
 }];
 

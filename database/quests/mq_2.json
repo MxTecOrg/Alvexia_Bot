@@ -1,0 +1,19 @@
+{
+    "id" : "mq_2",
+    "name" : "El comienzo 2.",
+    "type" : "action",
+    "desc" : "En el menu de 👤 Estado podras ver toda la información de las estadísticas de tu personaje , poderes , equipamiento y más , también puedes acceder directamente usando el comando /status. Cuando estes listo para continuar completa esta misión.",
+    "rewards" : {
+        "gold": 10,
+        "xp": 20,
+        "item": "",
+        "consumable": "",
+        "material": ""
+    },
+    "goal": {
+        "require": "",
+        "current": 1,
+        "total": 1
+    },
+    "next" : "mq_3"
+}

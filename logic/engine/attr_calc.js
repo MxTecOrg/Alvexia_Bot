@@ -138,7 +138,7 @@ const energyReg = async (user_id) => {
 };
 
 const getEnergyTime = async (user_id) => {
-    return (toEnd[user_id] ? toEnd[user_id] : null);
+    return toEnd[user_id];
 };
 
 module.exports = {

@@ -84,7 +84,7 @@ bot.on("callback_query", async (data) => {
     const chat_id = data.message.chat.id;
     const mess_id = data.message.message_id;
 
-    switch (data.data) {
+    if(data.data.includes("start")) switch (data.data) {
         case "start_accept":
             bot.deleteMessage(chat_id, mess_id);
             if (newUser[user_id].nickname) {

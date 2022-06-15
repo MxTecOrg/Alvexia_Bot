@@ -44,16 +44,16 @@ const _quests = async (user_id, chat_id) => {
 
 
     const msg = "📃 *Misiones*: \n\n" +
-        "🗺️ Mision: *" + (aQuest[user_id] + 1) + "/" + quests.length + "*" +
+        "🗺️ Mision: *" + (aQuest[user_id] + 1) + "/" + quests.length + "* \n" +
         "🖋️ Nombre: *" + qq.name + "*\n" +
-        "🧾 Descripción: *" + qq.desc + "* \n" +
-        "" + req + r;
+        "🧾 Descripción: *" + qq.desc + "* \n\n" +
+        "" + req + "\n" + r;
 
     const opts = {
         parse_mode: "Markdown",
         reply_markup: {
             inline_keyboard: [
-                [{ text: (q.current == q.total ? "✅ Completar" : "❕Incompleto"), callback_data: "quest_complete" }],
+                [{ text: (q.current >= q.total ? "✅ Completar" : "❕Incompleto"), callback_data: "quest_complete" }],
                 [{ text: "⬅️ Anterior", callback_data: "quest_prev" }, { text: "Siguiente ➡️", callback_data: "quest_next" }]
             ]
         }
@@ -76,16 +76,42 @@ bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
     const chat_id = data.message.chat.id;
     const mess_id = data.message.message_id;
+    const hero = await Hero.findOne({
+        where: {
+            user_id: user_id
+        }
+    });
 
-    switch (data.data) {
+
+    if (!hero) {
+        bot.deleteMessage(chat_id , mess_id);
+        return bot.sendMessage(chat_id , "Esta cuenta no existe , use el comando /start para crear una.");
+    }
+
+    
+    if(data.data.includes("quest_")) switch (data.data) {
         case "quest_complete":
             bot.deleteMessage(chat_id, mess_id);
-            completeQuest(user_id , chat_id);
+            completeQuest(user_id, chat_id);
             break;
-            case "quest_prev":
-                break;
-                case "quest_next":
-                    break;
+        case "quest_prev":
+            let pq = aQuest[user_id];
+            if(!aq) aQuest[user_id] = 0;
+            if(aQuest[user_id] == 0) aQuest[user_id] = (JSON.parse(hero.quests).length - 1);
+            else aQuest[user_id] -= 1;
+            let ac = aQuest[user_id];
+            const { msg, opts } = await _quests(user_id);
+            if(pq != ac) bot.editMessage(chat_id , mess_id , msg , opts);
+            break;
+        case "quest_next":
+            let pq = aQuest[user_id];
+            if (!aq) aQuest[user_id] = 0;
+            if (aQuest[user_id] == (JSON.parse(hero.quests).length - 1)) aQuest[user_id] = 0;
+            else aQuest[user_id] += 1;
+            let ac = aQuest[user_id];
+            const { msg, opts } = await _quests(user_id);
+            if (pq != ac) bot.editMessage(chat_id, mess_id, msg, opts);
+            break;
         default:
             break;
     }
@@ -93,7 +119,8 @@ bot.on("callback_query", async (data) => {
 
 
 const acceptQuest = async (user_id, chat_id, quest) => {
-    if (QUESTS[quest]) return;
+    let Q = QUESTS.getQuests()[quest];
+    if (!Q) return;
     const hero = await Hero.findOne({
         where: {
             user_id: user_id
@@ -103,22 +130,26 @@ const acceptQuest = async (user_id, chat_id, quest) => {
 
     for (let q of quests) {
         if (q.id == quest) {
-            bot.sendMessage(chat_id, "La misión '" + q.name + "' ya se encuentra activa.");
+            bot.sendMessage(chat_id, "La misión '" + Q.name + "' ya se encuentra activa.");
             return;
         }
     }
 
-    quests.push(QUESTS[quest]);
+    quests.push({
+        id: Q.id,
+        current: Q.goal.current,
+        total: Q.goal.total
+    });
 
     await hero.setData({
         quests: quests
     });
 
-    bot.sendMessage(chat_id, "Se acepto la misión '" + QUESTS[quest].name + "'");
+    bot.sendMessage(chat_id, "Se acepto la misión '" + Q.name + "'");
 };
 
 const completeQuest = async (user_id, chat_id) => {
-    
+
     const hero = await Hero.findOne({
         where: {
             user_id: user_id
@@ -127,36 +158,38 @@ const completeQuest = async (user_id, chat_id) => {
     let quests = JSON.parse(hero.quests);
     let inventory = JSON.parse(hero.inventory);
     let coins = JSON.parse(hero.coins);
-    if(!quests[aQuest[user_id]]) return;
-    if (QUESTS.getQuests()[quests[aQuest[user_id]].id]) return;
+    if (!quests[aQuest[user_id]]) return;
+    let Q = QUESTS.getQuests()[quests[aQuest[user_id]].id];
+    if (!Q) return;
     let quest = quests[aQuest[user_id]].id;
     for (let q in quests) {
         if (quests[q].id == quest) {
-            if (quests[q].goal.current >= quests[q].goal.total) {
-                if (quests[q].rewards.item != "" && inventory.armory.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
-                inventory.armory.push(quests[q].rewards.item);
+            if (quests[q].current >= quests[q].total) {
+                if (Q.rewards.item != "" && inventory.armory.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
+                inventory.armory.push(Q.rewards.item);
 
 
 
-                if (quests[q].rewards.consumable != "" && inventory.consumables.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
-                inventory.consumables.push(quests[q].rewards.consumable);
+                if (Q.rewards.consumable != "" && inventory.consumables.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
+                inventory.consumables.push(Q.rewards.consumable);
 
 
                 for (let material in inventory.materials) {
-                    if (quest[q].rewards.material == inventory.materials[material].id) {
+                    if (Q.rewards.material == inventory.materials[material].id) {
                         inventory.materials[material].amount += 1;
                         break;
                     }
                     if (material == (inventory.materials.length - 1)) {
-                        inventory.materials.push(mat);
+                        inventory.materials.push(Qmñ.rewards.material);
                     }
                 }
 
 
-                //Añadir oro y xp
+                coins.gold += Q.rewards.gold;
+                xp += Q.rewards.xp;
 
 
-                bot.sendMessage(chat_id, "Se completo la misión y se obtuvo 💰 " + quests[q].rewards.gold + ", 🧠 " + quests[q].rewards.xp + (sItem ? " y los objetos " + sItem : ""));
+                bot.sendMessage(chat_id, "Se completo la misión y se obtuvo 💰 " + Q.rewards.gold + ", 🧠 " + Q.rewards.xp);
                 quests.splice(q, 1);
                 await hero.setData({
                     quests: quests,
@@ -164,9 +197,9 @@ const completeQuest = async (user_id, chat_id) => {
                     coins: coins,
                     xp: xp
                 });
+                if(Q.next) await acceptQuest(user_id , chat_id , Q.next);
                 return;
             }
-            bot.sendMessage(chat_id, "No se cumplen los requisitos para completar la misión.");
             return;
         }
     }

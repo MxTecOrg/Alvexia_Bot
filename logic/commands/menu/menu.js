@@ -53,7 +53,8 @@ const menu = async (user_id, chat_id) => {
     "🆙 Nivel: *" + hero.level + "* \t\t\t\t\t\t 🧠 XP: *" + hero.xp + "/" + level_db[hero.level - 1] + "*\n" +
     "♥️ Salud: *" + hero.hp + "/" + attr.stats.hp + " * \t\t 🔷 Mana: *" + hero.mp + "/" + attr.stats.mp + "*\n" +
     "🗺️ Zona:* " + hero.zone + "*\n" +
-    "🕹️ Estado:* " + hero.status + "*";
+    "🕹️ Estado:* " + hero.status + "\n*" +
+    "👾 Grupo: *" + (hero.party != "na" ? hero.party : "Ninguno") + "* \n";
     bot.sendMessage(chat_id, menu_str, opts);
 };
 
