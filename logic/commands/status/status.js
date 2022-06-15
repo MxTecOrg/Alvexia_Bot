@@ -3,9 +3,8 @@ const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 
-const {getEnergyTime} = require(config.LOGIC + "/engine/attr_calc.js");
-const level_db = JSON.parse(fs.readFileSync(config.DB + "/level_db.json"));
 require("./h_status");
+require("./equipment.js");
 
 const status = async (user_id, chat_id) => {
     const opts = {

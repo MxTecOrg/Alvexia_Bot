@@ -13,10 +13,6 @@ const ItemModel = (DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        pic: {
-            type: DataTypes.STRING,
-            defaultValue: "def_pic"
-        },
         level: {
             type: DataTypes.INTEGER,
             allowNull: false

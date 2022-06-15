@@ -32,6 +32,7 @@ const equip = {
     shoulders: "na",
     neck: "na",
     trinket: "na",
+    ring: "na",
     chest: "na",
     pants: "na",
     gloves: "na",
