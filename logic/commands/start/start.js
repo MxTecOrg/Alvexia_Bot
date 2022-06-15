@@ -2,7 +2,7 @@ const config = require("../../../config.js");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const menu = require(config.LOGIC + "/commands/menu/menu.js");
-const {updateStats , fillHeal } = require(config.LOGIC + "/engine/attr_calc.js");
+const { updateStats, fillHeal } = require(config.LOGIC + "/engine/attr_calc.js");
 
 var newUser = {},
     typeReq = {};
@@ -65,10 +65,10 @@ bot.on("message", async (data) => {
                         inline_keyboard: [
                             [{
                                 text: "✅ Aceptar",
-                                callback_data: "accept"
+                                callback_data: "start_accept"
                             }, {
                                 text: "Rechazar ❌",
-                                callback_data: "decline"
+                                callback_data: "start_decline"
                             }]
                         ]
                     }
@@ -83,40 +83,42 @@ bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
     const chat_id = data.message.chat.id;
     const mess_id = data.message.message_id;
-    bot.deleteMessage(chat_id , mess_id);
+
     switch (data.data) {
-        case "accept":
-        if (newUser[user_id].nickname) {
-            const hero = await Hero.create({
-                user_id: user_id,
-                nickname: newUser[user_id].nickname
-            });
-            if (!hero) {
-                typeReq[user_id] = "nickname";
-                return bot.sendMessage(chat_id, err_str);
+        case "start_accept":
+            bot.deleteMessage(chat_id, mess_id);
+            if (newUser[user_id].nickname) {
+                const hero = await Hero.create({
+                    user_id: user_id,
+                    nickname: newUser[user_id].nickname
+                });
+                if (!hero) {
+                    typeReq[user_id] = "nickname";
+                    return bot.sendMessage(chat_id, err_str);
+                }
+                const user = await User.create({
+                    user_id: user_id,
+                    chat_id: chat_id
+                });
+                if (!user) {
+                    typeReq[user_id] = "nickname";
+                    return bot.sendMessage(chat_id, err_str);
+                }
+                await updateStats(user_id);
+                await fillHeal(user_id);
+
+                await bot.sendMessage(chat_id, wlc2_1 + newUser[user_id].nickname + wlc2_2);
+                await bot.sendMessage(chat_id, wlc3);
+                menu(user_id, chat_id);
+
+                delete newUser[user_id];
+                delete typeReq[user_id];
             }
-            const user = await User.create({
-                user_id: user_id,
-                chat_id: chat_id
-            });
-            if (!user) {
-                typeReq[user_id] = "nickname";
-                return bot.sendMessage(chat_id, err_str);
-            }
-            await updateStats(user_id);
-            await fillHeal(user_id);
-            
-            await bot.sendMessage(chat_id, wlc2_1 + newUser[user_id].nickname + wlc2_2);
-            await bot.sendMessage(chat_id, wlc3);
-            menu(user_id , chat_id);
-            
-            delete newUser[user_id];
-            delete typeReq[user_id];
-        }
-        break;
+            break;
         default:
+            bot.deleteMessage(chat_id, mess_id);
             typeReq[user_id] = "nickname";
-            bot.sendMessage(chat_id , wlc);
+            bot.sendMessage(chat_id, wlc);
             break;
     }
 });

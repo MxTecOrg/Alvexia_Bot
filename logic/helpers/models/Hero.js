@@ -23,7 +23,7 @@ const stats = {
 
 const attr_points = {
     points: 0,
-    spend : 0
+    spend: 0
 };
 
 const equip = {
@@ -95,18 +95,16 @@ const friends = {
 };
 
 const quests = [{
-    id: "mq1",
-    status: {
-        current: 0,
-        total: 1
-    }
+    id: "mq_1",
+    current: 0,
+    total: 1
 }];
 
 const job = {
-    job : "na",
+    job: "na",
     level: 0,
     xp: 0,
-    energy : 5,
+    energy: 5,
     recipes: []
 }
 
@@ -141,7 +139,7 @@ const HeroModel = (DataTypes) => {
         },
         class: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+                defaultValue: "na"
         },
         expertice: {
             type: DataTypes.STRING,
