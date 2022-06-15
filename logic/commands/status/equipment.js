@@ -130,6 +130,13 @@ const unequip = async (user_id , chat_id ,mod) => {
         parse_mode: "Markdown"
     };
     
+    if(hero.status != "rest") {
+        return {
+            msg: "No puedes desequiparte fuera de la ciudad.",
+            opts
+        };
+    }
+    
     
     if (!equip[mod]) {
         return {

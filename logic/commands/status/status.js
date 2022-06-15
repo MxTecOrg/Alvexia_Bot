@@ -5,6 +5,7 @@ const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 
 require("./h_status");
 require("./equipment.js");
+require("./pa.js");
 
 const status = async (user_id, chat_id) => {
     const opts = {
@@ -17,7 +18,7 @@ const status = async (user_id, chat_id) => {
                 ],
                 [
                     "🔥 Habilidades ",
-                    " PS 💡"
+                    " PA 💡"
                 ],
                 [
                     " Atrás ↩️"
