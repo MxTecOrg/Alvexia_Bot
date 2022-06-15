@@ -5,19 +5,20 @@ const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 
 const {getEnergyTime} = require(config.LOGIC + "/engine/attr_calc.js");
 const level_db = JSON.parse(fs.readFileSync(config.DB + "/level_db.json"));
+require("./h_status");
 
-const menu = async (user_id, chat_id) => {
+const status = async (user_id, chat_id) => {
     const opts = {
         reply_markup: {
             resize_keyboard: true,
             keyboard: [
                 [
-                    "👤 Estado ",
+                    "👤 Estadísticas ",
                     " Equipo 🛡️"
                 ],
                 [
                     "🔥 Habilidades ",
-                    " Trabajo ⚒️"
+                    " PS 💡"
                 ],
                 [
                     " Atrás ↩️"
@@ -39,11 +40,11 @@ const menu = async (user_id, chat_id) => {
     bot.sendMessage(chat_id, str, opts);
 };
 
-bot.onText(/(\/status| Estado 👤)/, async (data) => {
+bot.onText(/(\/status|Estado 👤)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 
-    menu(user_id, chat_id);
+    status(user_id, chat_id);
 });
 
-module.exports = menu;
+module.exports = status;

@@ -49,16 +49,19 @@ const menu = async (user_id, chat_id) => {
     const eTime = getEnergyTime(user_id);
 
     const menu_str = "👤 Estado 👤 \n\n" +
+    "👤 Heroe: _" + hero.nickname + "_ \n" +
     "⚡ Energia: *" + hero.energy + "/" + hero.max_energy + (eTime ? "(+1⚡ " + (eTime / 1000 / 60) + "m)" : "") + "*\n" +
-    "🆙 Nivel: *" + hero.level + "* \t\t\t\t\t\t 🧠 XP: *" + hero.xp + "/" + level_db[hero.level - 1] + "*\n" +
-    "♥️ Salud: *" + hero.hp + "/" + attr.stats.hp + " * \t\t 🔷 Mana: *" + hero.mp + "/" + attr.stats.mp + "*\n" +
+    "🆙 Nivel: *" + hero.level + "* \n" +
+    "🧠 XP: *" + hero.xp + "/" + level_db[hero.level - 1] + "*\n" +
+    "♥️ Salud: *" + hero.hp + "/" + attr.stats.hp + " * \n" +
+    "🔷 Mana: *" + hero.mp + "/" + attr.stats.mp + "*\n" +
     "🗺️ Zona:* " + hero.zone + "*\n" +
     "🕹️ Estado:* " + hero.status + "\n*" +
     "👾 Grupo: *" + (hero.party != "na" ? hero.party : "Ninguno") + "* \n";
     bot.sendMessage(chat_id, menu_str, opts);
 };
 
-bot.onText(/(\/menu| Atrás ↩️)/, async (data) => {
+bot.onText(/(\/menu|Atrás ↩️)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 

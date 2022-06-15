@@ -96,7 +96,7 @@ bot.on("callback_query", async (data) => {
             break;
         case "quest_prev":
             let pq = aQuest[user_id];
-            if(!aq) aQuest[user_id] = 0;
+            if(!pq) aQuest[user_id] = 0;
             if(aQuest[user_id] == 0) aQuest[user_id] = (JSON.parse(hero.quests).length - 1);
             else aQuest[user_id] -= 1;
             let ac = aQuest[user_id];
@@ -104,13 +104,13 @@ bot.on("callback_query", async (data) => {
             if(pq != ac) bot.editMessage(chat_id , mess_id , msg , opts);
             break;
         case "quest_next":
-            let pq = aQuest[user_id];
-            if (!aq) aQuest[user_id] = 0;
+            let _pq = aQuest[user_id];
+            if (!_pq) aQuest[user_id] = 0;
             if (aQuest[user_id] == (JSON.parse(hero.quests).length - 1)) aQuest[user_id] = 0;
             else aQuest[user_id] += 1;
-            let ac = aQuest[user_id];
-            const { msg, opts } = await _quests(user_id);
-            if (pq != ac) bot.editMessage(chat_id, mess_id, msg, opts);
+            let _ac = aQuest[user_id];
+            const { _msg, _opts } = await _quests(user_id);
+            if (_pq != _ac) bot.editMessage(chat_id, mess_id, _msg, _opts);
             break;
         default:
             break;
@@ -180,13 +180,13 @@ const completeQuest = async (user_id, chat_id) => {
                         break;
                     }
                     if (material == (inventory.materials.length - 1)) {
-                        inventory.materials.push(Qmñ.rewards.material);
+                        inventory.materials.push(Q.rewards.material);
                     }
                 }
 
 
                 coins.gold += Q.rewards.gold;
-                xp += Q.rewards.xp;
+                hero.xp += Q.rewards.xp;
 
 
                 bot.sendMessage(chat_id, "Se completo la misión y se obtuvo 💰 " + Q.rewards.gold + ", 🧠 " + Q.rewards.xp);
@@ -195,7 +195,7 @@ const completeQuest = async (user_id, chat_id) => {
                     quests: quests,
                     inventory: inventory,
                     coins: coins,
-                    xp: xp
+                    xp: hero.xp
                 });
                 if(Q.next) await acceptQuest(user_id , chat_id , Q.next);
                 return;

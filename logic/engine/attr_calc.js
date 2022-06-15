@@ -137,7 +137,7 @@ const energyReg = async (user_id) => {
     } , TICK);
 };
 
-const getEnergyTime = async (user_id) => {
+const getEnergyTime = (user_id) => {
     return toEnd[user_id];
 };
 
