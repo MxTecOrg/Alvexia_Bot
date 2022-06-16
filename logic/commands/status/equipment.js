@@ -7,7 +7,6 @@ const { updateStats } = require(config.LOGIC + "/engine/attr_calc.js");
 const equipment = async (user_id, chat_id) => {
     const opts = {
         reply_markup: {
-            resize_keyboard: true,
             inline_keyboard: [
             ]
         },
@@ -52,7 +51,7 @@ const equipment = async (user_id, chat_id) => {
         }
         const item = await Item.findOne({
             where: {
-                item_id: equip
+                item_id: equip[eq]
             }
         });
         if (!item) {

@@ -9,7 +9,7 @@ const ItemModel = require("./models/Item.js");
  **********************/
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: config.DB + '/database.db',
+    storage: config.DB + '/data.db',
     logging: false
 });
 
@@ -152,7 +152,8 @@ class Item extends Model {
 Item.init(
     ItemModel(DataTypes),
     {
-        sequelize
+        sequelize,
+        timestamps: false
     }
 );
 

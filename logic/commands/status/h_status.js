@@ -1,7 +1,7 @@
 const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
-const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
+const { User, Hero, Op , Item} = require(config.LOGIC + "/helpers/DB.js");
 
 const {getEnergyTime} = require(config.LOGIC + "/engine/attr_calc.js");
 const level_db = JSON.parse(fs.readFileSync(config.DB + "/level_db.json"));

@@ -1,6 +1,6 @@
 const config = require("../../config.js");
 const fs = require("fs");
-const { Hero } = require(config.LOGIC + "/helpers/DB.js");
+const { Hero , Item } = require(config.LOGIC + "/helpers/DB.js");
 const attrDB = JSON.parse(fs.readFileSync(config.DB + "/attr_db.json"));
 
 const updateStats = async (user_id) => {
