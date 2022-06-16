@@ -9,8 +9,6 @@ const items = async (user_id, page) => {
     let opts = {
         reply_markup: {
             inline_keyboard: [
-                [
-                ]
             ]
         },
         parse_mode: "Markdown"
@@ -61,9 +59,25 @@ const items = async (user_id, page) => {
         text: "Siguiente ➡️",
         callback_data: "items " + (page + 10)
     }]);
-
+    if(false == compareInline(seg[user_id] , {msg , opts})){
+        return { msg : false };
+    }
+    seg[user_id] = {msg , opts};
+    
     return { msg, opts };
 };
+
+const compareInline = (inl1 , inl2) => {
+    if(!inl1 || !inl2) return false;
+    if(!inl1.msg || !inl1.opts || !inl2.msg || !inl2.opts) return false;
+    if(inl1.msg != inl2.msg) return true;
+    if(inl1.opts.reply_markup.inline_keyboard.length != inl2.opts.reply_markup.inline_keyboard.length) return true;
+    for(let i in inl1.opts.reply_markup.inline_keyboard){
+        if(!inl2.opts.reply_markup.inline_keyboard[i]) return true;
+        if(inl1.opts.reply_markup.inline_keyboard[i][0].text != inl2.opts.reply_markup.inline_keyboard[i][0].text) return true;
+    }
+    return false;
+}
 
 bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
@@ -73,6 +87,7 @@ bot.on("callback_query", async (data) => {
     if (data.data.includes("items ")) {
         const mod = data.data.split(" ")[1];
         const { msg, opts } = await items(user_id , mod);
+        if(msg == false) return;
         opts.chat_id = chat_id;
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);
@@ -178,6 +193,7 @@ bot.onText(/(\/items|🛡️ Objetos)/, async (data) => {
     const chat_id = data.chat.id;
 
     const { msg, opts } = await items(user_id);
+    bot.sendMessage(chat_id , msg , opts);
 });
 
 

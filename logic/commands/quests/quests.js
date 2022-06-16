@@ -169,13 +169,13 @@ const completeQuest = async (user_id, chat_id) => {
     for (let q in quests) {
         if (quests[q].id == quest) {
             if (quests[q].current >= quests[q].total) {
-                if (Q.rewards.item != "" && inventory.armory.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
-                inventory.armory.push(Q.rewards.item);
+                if (Q.rewards.item != "" && inventory.items.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
+                if(Q.rewards.items != "") inventory.items.push(Q.rewards.item);
 
 
 
                 if (Q.rewards.consumable != "" && inventory.consumables.length >= (inventory.bags * 10)) return bot.sendMessage(chat_id, "No tiene espació en su bolsa para recibir los objetos de misión.");
-                inventory.consumables.push(Q.rewards.consumable);
+                if(Q.rewards.items != "") inventory.consumables.push(Q.rewards.consumable);
 
 
                 for (let material in inventory.materials) {

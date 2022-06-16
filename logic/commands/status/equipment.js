@@ -245,7 +245,7 @@ const equipLook = async (user_id, mod) => {
     const itemD = item.getAttrData();
     for (let i in itemD) {
         if (itemD[i] == 0) continue;
-        msg += "\n" + attr_str[i] + ": *" + itemD[i] + (i > 9 ? (itemD[i]).toFixed(2) : itemD[i]) + "*";
+        msg += "\n" + attr_str[i] + ": *" + itemD[i] + (i > 9 ? Number(itemD[i]).toFixed(2) + "%": itemD[i]) + "*";
     }
 
     return {

@@ -2,6 +2,7 @@ const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op , Item} = require(config.LOGIC + "/helpers/DB.js");
+require("./items.json");
 
 
 const inventory = async (user_id, chat_id) => {
