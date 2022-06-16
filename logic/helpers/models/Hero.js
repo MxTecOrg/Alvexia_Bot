@@ -75,7 +75,7 @@ const skills = {
 
 const inventory = {
     bags: 1,
-    items: [],
+    items: ["aaaaaaa1"],
     consumables: [],
     materials: []
 };

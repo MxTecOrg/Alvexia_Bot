@@ -9,6 +9,10 @@ const ItemModel = (DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         desc: {
             type: DataTypes.STRING,
             allowNull: false

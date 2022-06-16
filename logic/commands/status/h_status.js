@@ -79,10 +79,11 @@ const stadistics = async (user_id, chat_id) => {
         xp_extra: "💡 XP Extra",
         gold_extra: "💰 Oro Extra"
     };
-
+    let count = 0;
     let msg = "📊 *Estadísticas*: \n";
     for (let s in stats) {
-        msg += "\n" + stats_str[s] + ": *" + (s > 3 ? (stats[s]).toFixed(2) : stats[s]) + (s > 4 ? "%*" : "*");
+        msg += "\n" + stats_str[s] + ": *" + (count > 3 ? (stats[s]).toFixed(2) : stats[s]) + (s > 4 ? "%*" : "*");
+        count++;
     }
     return { msg, opts };
 };
