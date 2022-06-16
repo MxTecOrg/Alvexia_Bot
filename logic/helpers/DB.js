@@ -9,7 +9,7 @@ const ItemModel = require("./models/Item.js");
  **********************/
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: config.DB + '/datab.db',
+    storage: config.DB + '/database.db',
     logging: false
 });
 

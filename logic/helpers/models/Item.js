@@ -3,7 +3,8 @@ const ItemModel = (DataTypes) => {
         item_id: {
             type: DataTypes.STRING,
             unique: true,
-            allowNull: false
+            allowNull: false,
+            primaryKey: true
         },
         name : {
             type: DataTypes.STRING,
