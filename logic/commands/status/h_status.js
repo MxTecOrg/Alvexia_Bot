@@ -82,7 +82,7 @@ const stadistics = async (user_id, chat_id) => {
 
     let msg = "📊 *Estadísticas*: \n";
     for (let s in stats) {
-        msg += "\n" + stats_str[s] + ": *" + (s > 3 ? parseFloat(stats[s]).toFixed(2) : stats[s]) + (s > 4 ? "%*" : "*");
+        msg += "\n" + stats_str[s] + ": *" + (s > 3 ? (stats[s]).toFixed(2) : stats[s]) + (s > 4 ? "%*" : "*");
     }
     return { msg, opts };
 };

@@ -3,11 +3,11 @@ const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const attr_db = JSON.parse(fs.readFileSync(config.DB + "/attr_db.json", "utf-8"));
+const { updateStats } = require(config.LOGIC + "/engine/attr_calc.js");
 
 const pa = async (user_id) => {
     const opts = {
         reply_markup: {
-            resize_keyboard: true,
             inline_keyboard: [
             ]
         },
@@ -26,12 +26,12 @@ const pa = async (user_id) => {
     const attr_points = JSON.parse(hero.attr_points);
 
     const attr_str = {
-        "sta": "♥️ Vitalidad",
-        "con": "🔷 Concentración",
-        "str": "💪🏻 Fuerza",
-        "agl": "🦶🏻 Agilidad",
-        "int": "🧠 Intelecto",
-        "luck": "🍀 Suerte"
+        "sta": "♥️ Vit",
+        "con": "🔷 Con",
+        "str": "💪🏻 Fue",
+        "agl": "🦶🏻 Agi",
+        "int": "🧠 Int",
+        "luck": "🍀 Sue"
     };
 
     for (let a in attributes) {
@@ -54,7 +54,7 @@ const pa = async (user_id) => {
 
     const msg = "💡 *Puntos de Atributos:*\n\n" +
         "📜 Puntos: *" + attr_points.points + "* \n" +
-        "📃 Usados: *" + attr_points.used + "*";
+        "📃 Usados: *" + attr_points.spend + "*";
     return { msg, opts }
 };
 
@@ -137,6 +137,12 @@ bot.on("callback_query", async (data) => {
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);
     }
+    else if (data.data == "pa"){
+        const { msg, opts } = await pa(user_id);
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        bot.editMessageText(msg, opts);
+    }
 });
 
 const add_attr = async (user_id, mod, cant) => {
@@ -153,12 +159,15 @@ const add_attr = async (user_id, mod, cant) => {
 
     if (attr_points.points < cant) return false;
     attributes[mod] += cant;
-    attr_points -= cant;
+    attr_points.points -= cant;
+    attr_points.spend += cant;
 
     await hero.setData({
         attributes: attributes,
         attr_points: attr_points
     });
+    
+    await updateStats(user_id);
 
     return true;
 }

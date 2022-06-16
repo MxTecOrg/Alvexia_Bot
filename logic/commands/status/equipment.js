@@ -2,6 +2,7 @@ const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op, Item } = require(config.LOGIC + "/helpers/DB.js");
+const { updateStats } = require(config.LOGIC + "/engine/attr_calc.js");
 
 const equipment = async (user_id, chat_id) => {
     const opts = {
@@ -172,6 +173,7 @@ const unequip = async (user_id , chat_id ,mod) => {
         inventory : inventory,
         equip : equip
     });
+    await updateStats(user_id);
     return (await equipment(user_id , chat_id));
 };
 
@@ -243,7 +245,7 @@ const equipLook = async (user_id, mod) => {
     const itemD = item.getAttrData();
     for (let i in itemD) {
         if (itemD[i] == 0) continue;
-        msg += "\n" + attr_str[i] + ": *" + itemD[i] + (i > 10 ? parseFloat(itemD[i]).toFixed(2) : itemD[i]) + "*";
+        msg += "\n" + attr_str[i] + ": *" + itemD[i] + (i > 9 ? (itemD[i]).toFixed(2) : itemD[i]) + "*";
     }
 
     return {
