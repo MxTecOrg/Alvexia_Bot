@@ -33,12 +33,12 @@ const items = async (user_id, page) => {
     for (let i = page; i < (page + 10); i++) {
         let irow = [];
         if (!inv.items[i]) continue;
-        const item = Item.findOne({
+        const item = await Item.findOne({
             where: {
                 item_id: inv.items[i]
             }
         });
-
+        if(!item) continue;
         irow.push({
             text: item.name,
             callback_data: "item_look " + inv.items[i]
@@ -61,7 +61,7 @@ const items = async (user_id, page) => {
         callback_data: "items " + (page + 10)
     }]);
     
-    if(!seg[yser_id]) seg[user_id] = {msg : msg + "." , opts};
+    if(!seg[user_id]) seg[user_id] = {msg : msg + "." , opts};
     if(false == compareInline(seg[user_id] , {msg , opts})){
         return { msg : false };
     }
