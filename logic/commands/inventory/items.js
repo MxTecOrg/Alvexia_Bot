@@ -6,7 +6,7 @@ const { updateStats } = require(config.LOGIC + "/engine/attr_calc.js");
 
 var seg = {};
 
-const items = async (user_id, page) => {
+const items = async (user_id, _page) => {
     let opts = {
         reply_markup: {
             inline_keyboard: [
@@ -20,7 +20,7 @@ const items = async (user_id, page) => {
             user_id: user_id
         }
     });
-
+    const page = parseInt(_page);
     if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
 
     const inv = JSON.parse(hero.inventory);
@@ -55,10 +55,10 @@ const items = async (user_id, page) => {
 
     opts.reply_markup.inline_keyboard.push([{
         text: "⬅️ Anterior",
-        callback_data: "items " + (page - 10)
+        callback_data: "items " + (parseInt(page) - 10)
     }, {
         text: "Siguiente ➡️",
-        callback_data: "items " + (page + 10)
+        callback_data: "items " + (parseInt(page) + 10)
     }]);
 
     if (!seg[user_id]) seg[user_id] = { msg: msg + ".", opts };
@@ -112,7 +112,7 @@ bot.on("callback_query", async (data) => {
         bot.editMessageText(msg, opts);
     }
     else if (data.data.includes("del_item ")) {
-        const mod = data.data.split(" ")[1];
+        const mod = parseInt(data.data.split(" ")[1]);
         const name = data.data.split(" ")[2];
         const { msg, opts } = await delItem(user_id, mod , name);
         if(msg == false) return;
@@ -121,7 +121,7 @@ bot.on("callback_query", async (data) => {
         bot.editMessageText(msg, opts);
     }
     else if (data.data.includes("del_item_accept ")) {
-        const mod = data.data.split(" ")[1];
+        const mod = parseInt(data.data.split(" ")[1]);
         const name = data.data.split(" ")[2];
         const { msg, opts } = await delItemAccept(user_id, mod, name);
         if (msg == false) return;
@@ -184,6 +184,10 @@ const delItemAccept = async (user_id, mod, name) => {
     if (item.name != name) return {msg : false};
 
     inv.items.splice(mod, 1);
+    
+    await hero.setData({
+        inventory: inv
+    });
 
     const { msg, opts } = await items(chat_id, 0);
 
@@ -211,6 +215,7 @@ const equipItem = async (user_id, mod) => {
     if (!inv.items[mod]) return { msg: false };
 
     const ite = inv.items[mod];
+    inv.items.splice(mod , 1);
 
     const item = await Item.findOne({
         where: {
@@ -294,8 +299,10 @@ const itemLook = async (item_id) => {
         "📔 Tipo: *" + item.type + "* \n" +
         "📖 Descripción: _" + item.desc + "_ \n" +
         attr_str.level + ": *" + item.level + "*\n" +
-        (item.isMod ? attr_str.modLvl + ": *" + item.modLvl + "*\n" : "") +
-        "\n⚖️ Requiere:";
+        (item.isMod ? attr_str.modLvl + ": *" + item.modLvl + "*\n" : "");
+        
+    const require = JSON.parse(item.require);
+    if(Object.keys(require).length > 0) msg +=         "\n⚖️ Requiere:";
 
     for (let r in require) {
         if (!attr_str[r]) continue;
@@ -308,11 +315,11 @@ const itemLook = async (item_id) => {
     let count = 0;
     for (let i in itemD) {
         if (itemD[i] == 0) continue;
-        msg += "\n" + attr_str[i] + ": *" + itemD[i] + (count > 9 ? Number(itemD[i]).toFixed(2) + "%" : itemD[i]) + "*";
+        msg += "\n" + attr_str[i] + ": *" + (count > 9 ? Number(itemD[i]).toFixed(2) + "%" : itemD[i]) + "*";
         count++;
     }
 
-    msg += "\n" + attr_str.cost + "*" + itemD.cost + "*";
+    msg += "\n" + attr_str.cost + "*" + item.cost + "*";
 
     return {
         msg,

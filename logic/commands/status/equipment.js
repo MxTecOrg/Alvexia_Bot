@@ -60,7 +60,7 @@ const equipment = async (user_id, chat_id) => {
                 callback_data: "none"
             }, {
                 text: "❌",
-                callback_data: "unequip " + eq
+                callback_data: "unequip_item " + eq
             });
             opts.reply_markup.inline_keyboard.push(irow);
             continue;
@@ -71,7 +71,7 @@ const equipment = async (user_id, chat_id) => {
             callback_data: "equip_look " + eq
         }, {
             text: "❌",
-            callback_data: "unequip " + eq
+            callback_data: "unequip_item " + eq
         });
         opts.reply_markup.inline_keyboard.push(irow);
 
@@ -95,7 +95,7 @@ bot.on("callback_query", async (data) => {
         bot.editMessageText(msg, opts);
     }
 
-    else if (data.data.includes("unequip ")) {
+    else if (data.data.includes("unequip_item ")) {
         const mod = data.data.split(" ")[1];
         const { msg, opts } = await unequip(user_id, chat_id , mod);
         opts.chat_id = chat_id;
@@ -166,7 +166,7 @@ const unequip = async (user_id , chat_id ,mod) => {
         };
     }
     
-    inventory.items.push(item.id);
+    inventory.items.push(item.item_id);
     equip[mod] = "na";
     await hero.setData({
         inventory : inventory,
