@@ -77,7 +77,7 @@ const inventory = {
     bags: 1,
     items: ["aaaaaaa1"],
     consumables: ["ccccccc1"],
-    materials: ["mmmmmmm1"]
+    materials: [{id : "mmmmmmm1" , name: "🔗 Mena de Hierro" , amount: 1}]
 };
 
 const coins = {

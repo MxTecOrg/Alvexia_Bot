@@ -65,7 +65,7 @@ const consumables = async (user_id, _page) => {
 
     let _opts = JSON.parse(JSON.stringify(opts));
     if (!seg[user_id]) seg[user_id] = { msg: msg + ".", _opts };
-    if (false == compareInline(seg[user_id], { msg, opts })) {
+    if (compare(seg[user_id], { msg, opts })) {
         return { msg: false };
     }
     seg[user_id] = { msg, opts: _opts };
@@ -73,17 +73,27 @@ const consumables = async (user_id, _page) => {
     return { msg, opts };
 };
 
-const compareInline = (inl1, inl2) => {
-    if (!inl1 || !inl2) return false;
-    if (!inl1.msg || !inl1.opts || !inl2.msg || !inl2.opts) return false;
-    if (inl1.msg != inl2.msg) return true;
-    //if (inl1.opts.reply_markup.inline_keyboard != inl2.opts.reply_markup.inline_keyboard) return true;
-    if (inl1.opts.reply_markup.inline_keyboard.length != inl2.opts.reply_markup.inline_keyboard.length) return true;
-    for (let i in inl1.opts.reply_markup.inline_keyboard) {
-        if (!inl2.opts.reply_markup.inline_keyboard[i]) return true;
-        if (inl1.opts.reply_markup.inline_keyboard[i][0].text != inl2.opts.reply_markup.inline_keyboard[i][0].text) return true;
+const compare = (obj1, obj2) => {
+    if (typeof(obj1) != typeof(obj2)) return false;
+    if (typeof(obj1) == "object" && obj1.constructor.name != obj2.constructor.name) return false;
+    if (obj1.constructor.name == "Object") {
+        const obj1keys = Object.keys(obj1);
+        const obj2keys = Object.keys(obj2);
+        if (obj1keys.length != obj2keys.length) return false;
+        for (let key in obj1) {
+            if (!obj2keys.includes(key)) return false;
+            if (!compare(obj1[key], obj2[key])) return false;
+        }
+        return true;
+    } else if (obj1.constructor.name == "Array") {
+        if (obj1.length != obj2.length) return false;
+        for (let i in obj1) {
+            if (!compare(obj1[i], obj2[i])) return false;
+        }
+        return true;
     }
-    return false;
+    if (obj1 != obj2) return false;
+    return true;
 };
 
 const useConsumable = async (user_id , mod) => {
