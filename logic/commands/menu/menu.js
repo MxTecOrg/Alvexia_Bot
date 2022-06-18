@@ -15,7 +15,7 @@ const menu = async (user_id, chat_id) => {
                     " Quests 🗺️"
                 ],
                 [
-                    "🏘️ Zona ",
+                    "🏘️ Ciudad ",
                     " Estado 👤"
                 ],
                 [

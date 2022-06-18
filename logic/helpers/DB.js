@@ -3,6 +3,8 @@ const { Sequelize, Model, DataTypes, Op } = require("sequelize");
 const UserModel = require("./models/User.js");
 const HeroModel = require("./models/Hero.js");
 const ItemModel = require("./models/Item.js");
+const ConsumableModel = require("./models/Consumable.js");
+const MaterialModel = require("./models/Material.js");
 
 /**********************
  * Iniciando Conexion *
@@ -15,7 +17,7 @@ const sequelize = new Sequelize({
 
 const sequelize2 = new Sequelize({
     dialect: 'sqlite',
-    storage: config.DB + '/objects.db',
+    storage: config.DB + '/object.db',
     logging: false
 });
 
@@ -160,7 +162,7 @@ class Item extends Model {
 Item.init(
     ItemModel(DataTypes),
     {
-        sequelize2,
+        sequelize : sequelize2,
         timestamps: false
     }
 );
@@ -170,9 +172,9 @@ Item.init(
 })();
 
 
-/*********************
- *  Modelo de  Item  *
- *********************/
+/*************************
+ *  Modelo de Consumible *
+ *************************/
 class Consumable extends Model {
     getData() {
         const rows = ["pa" , "pe" , "max_pe" , "sta", "con", "str", "agl", "int", "luck", "hp", "mp"];
@@ -208,7 +210,7 @@ class Consumable extends Model {
 Consumable.init(
     ConsumableModel(DataTypes),
     {
-        sequelize2,
+        sequelize: sequelize2,
         timestamps: false
     }
 );
@@ -218,10 +220,60 @@ Consumable.init(
 })();
 
 
+/*************************
+ *  Modelo de Materiales *
+ *************************/
+class Material extends Model {
+    getData() {
+        const rows = ["pa" , "pe" , "max_pe" , "sta", "con", "str", "agl", "int", "luck", "hp", "mp"];
+        let ret = {};
+        for (let row of rows) {
+            if (this[row]) {
+                try {
+                    ret[row] = JSON.parse(this[row]);
+                } catch (err) {
+                    ret[row] = this[row];
+                }
+            }
+        }
+        return ret;
+    }
+
+    async setData(obj) {
+        let parsedObj = {};
+        for (let o in obj) {
+            if (this[o] == undefined) continue;
+            parsedObj[o] = (typeof(obj) === "object" ? JSON.stringify(obj[o]) : obj[o]);
+        }
+        try {
+            await this.update(parsedObj);
+            return true;
+        } catch (err) {
+            console.err(err);
+            return false;
+        }
+    }
+}
+
+Consumable.init(
+    ConsumableModel(DataTypes),
+    {
+        sequelize: sequelize2,
+        timestamps: false
+    }
+);
+
+(async () => {
+    await Material.sync();
+})();
+
+
+
 module.exports = {
     User,
     Hero,
     Item,
     Consumable,
+    Material,
     Op
 }

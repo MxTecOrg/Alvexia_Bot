@@ -20,7 +20,7 @@ const consumables = async (user_id, _page) => {
             user_id: user_id
         }
     });
-    const page = parseInt(_page);
+    let page = parseInt(_page);
     if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
 
     const inv = JSON.parse(hero.inventory);
@@ -49,7 +49,7 @@ const consumables = async (user_id, _page) => {
             callback_data: "use_consumable " + con.type + " " + i
         }, {
             text: "🗑️",
-            callback_data: "del_consumable " + i + " " + con.name
+            callback_data: "delete_consumable " + i + " " + con.name
         });
 
         opts.reply_markup.inline_keyboard.push(irow);
@@ -63,12 +63,13 @@ const consumables = async (user_id, _page) => {
         callback_data: "consumables " + (parseInt(page) + 10)
     }]);
 
-    if (!seg[user_id]) seg[user_id] = { msg: msg + ".", opts };
+    let _opts = JSON.parse(JSON.stringify(opts));
+    if (!seg[user_id]) seg[user_id] = { msg: msg + ".", _opts };
     if (false == compareInline(seg[user_id], { msg, opts })) {
         return { msg: false };
     }
-    seg[user_id] = { msg, opts };
-
+    seg[user_id] = { msg, opts: _opts };
+    
     return { msg, opts };
 };
 
@@ -76,14 +77,45 @@ const compareInline = (inl1, inl2) => {
     if (!inl1 || !inl2) return false;
     if (!inl1.msg || !inl1.opts || !inl2.msg || !inl2.opts) return false;
     if (inl1.msg != inl2.msg) return true;
-    if (inl1.opts.reply_markup.inline_keyboard != inl2.opts.reply_markup.inline_keyboard) return true;
+    //if (inl1.opts.reply_markup.inline_keyboard != inl2.opts.reply_markup.inline_keyboard) return true;
     if (inl1.opts.reply_markup.inline_keyboard.length != inl2.opts.reply_markup.inline_keyboard.length) return true;
     for (let i in inl1.opts.reply_markup.inline_keyboard) {
         if (!inl2.opts.reply_markup.inline_keyboard[i]) return true;
         if (inl1.opts.reply_markup.inline_keyboard[i][0].text != inl2.opts.reply_markup.inline_keyboard[i][0].text) return true;
     }
     return false;
-}
+};
+
+const useConsumable = async (user_id , mod) => {
+    const hero = await Hero.findOne({
+        where: {
+            user_id: user_id
+        }
+    });
+    
+    if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
+    
+    const inv = JSON.parse(hero.inventory);
+    
+    if(!inv.consumables[mod]) return false;
+    
+    const con = await Consumable.findOne({
+        where: {
+            item_id: inv.consumables[mod]
+        }
+    });
+    
+    if(!con) return false;
+    
+    switch(con.type){
+        case "potion":
+            break;
+        case "scroll":
+            break;
+        case "spell":
+            break;
+    }
+};
 
 const consumableLook = async (item_id) => {
     const con = await Consumable.findOne({
@@ -158,6 +190,73 @@ const consumableLook = async (item_id) => {
     }
 };
 
+const delConsumable = async (user_id, mod, name) => {
+    let opts = {
+        reply_markup: {
+            inline_keyboard: [
+                [
+                    {
+                        text: "✅ Aceptar",
+                        callback_data: "del_consumable_accept " + mod + " " + name
+                    },
+                    {
+                        text: "❌ Cancelar",
+                        callback_data: "consumables 0"
+                    }
+                ]
+            ]
+        },
+        parse_mode: "Markdown"
+    };
+
+    const hero = await Hero.findOne({
+        where: {
+            user_id: user_id
+        }
+    });
+
+    if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
+
+    const msg = "⁉️ Estás seguro que deseás eliminar el objeto *" + name + "* ❓";
+    return { msg, opts };
+
+};
+
+const delConsumableAccept = async (user_id, mod, name) => {
+    const hero = await Hero.findOne({
+        where: {
+            user_id: user_id
+        }
+    });
+
+    if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
+
+    const inv = JSON.parse(hero.inventory);
+    if (!inv.consumables[mod]) return {msg : false};
+
+    const con = await Consumable.findOne({
+        where: {
+            item_id: inv.consumables[mod]
+        }
+    });
+
+    if (con.name != name) return {msg : false};
+
+    inv.consumables.splice(mod, 1);
+    
+    await hero.setData({
+        inventory: inv
+    });
+
+    const { msg, opts } = await consumables(chat_id, 0);
+
+    return {
+        msg,
+        opts
+    };
+};
+
+
 
 bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
@@ -175,6 +274,33 @@ bot.on("callback_query", async (data) => {
     else if (data.data.includes("consumable_look ")) {
         const mod = data.data.split(" ")[1];
         const { msg, opts } = await consumableLook(mod);
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        bot.editMessageText(msg, opts);
+    }
+    
+    else if (data.data.includes("delete_consumable ")) {
+        const mod = parseInt(data.data.split(" ")[1]);
+        const name = data.data.split(" ")[2];
+        const { msg, opts } = await delConsumable(user_id, mod , name);
+        if(msg == false) return;
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        bot.editMessageText(msg, opts);
+    }
+    else if (data.data.includes("del_consumable_accept ")) {
+        const mod = parseInt(data.data.split(" ")[1]);
+        const name = data.data.split(" ")[2];
+        const { msg, opts } = await delConsumableAccept(user_id, mod, name);
+        if (msg == false) return;
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        bot.editMessageText(msg, opts);
+    }
+    else if (data.data.includes("use_consumable ")) {
+        const mod = parseInt(data.data.split(" ")[1]);
+        const { msg, opts } = await useConsumable(user_id, mod);
+        if (msg == false) return;
         opts.chat_id = chat_id;
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);

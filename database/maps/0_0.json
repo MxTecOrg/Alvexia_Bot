@@ -1,0 +1,22 @@
+{
+    "name" : "Puerto Boscal",
+    "desc" : "Puerto Boscal es una ciudad portuaria , conocida por ser el lugar donde los mortales se convierte en heroe. El inició de la aventura comienza aqui.",
+    "level" : {
+        "min": 1,
+        "max": 5
+    },
+    "expedition" : {
+        "enemies" : [],
+        "loot" : {
+            "items" : [],
+            "consumables" : [],
+            "materials" : [],
+            "gold" : {
+                "min" : 1,
+                "max" : 5
+            }
+        }
+    },
+    "shop": [],
+    "dungeons" : []
+}

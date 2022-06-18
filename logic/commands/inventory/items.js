@@ -20,7 +20,7 @@ const items = async (user_id, _page) => {
             user_id: user_id
         }
     });
-    const page = parseInt(_page);
+    let page = parseInt(_page);
     if (!hero) return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
 
     const inv = JSON.parse(hero.inventory);
@@ -47,7 +47,7 @@ const items = async (user_id, _page) => {
             callback_data: "equip_item " + i
         }, {
             text: "🗑️",
-            callback_data: "del_item " + i + " " + item.name
+            callback_data: "delete_item " + i + " " + item.name
         });
 
         opts.reply_markup.inline_keyboard.push(irow);
@@ -60,12 +60,12 @@ const items = async (user_id, _page) => {
         text: "Siguiente ➡️",
         callback_data: "items " + (parseInt(page) + 10)
     }]);
-
-    if (!seg[user_id]) seg[user_id] = { msg: msg + ".", opts };
+    let _opts = JSON.parse(JSON.stringify(opts));
+    if (!seg[user_id]) seg[user_id] = { msg: msg + ".", _opts };
     if (false == compareInline(seg[user_id], { msg, opts })) {
         return { msg: false };
     }
-    seg[user_id] = { msg, opts };
+    seg[user_id] = { msg, opts : _opts };
 
     return { msg, opts };
 };
@@ -74,7 +74,7 @@ const compareInline = (inl1, inl2) => {
     if (!inl1 || !inl2) return false;
     if (!inl1.msg || !inl1.opts || !inl2.msg || !inl2.opts) return false;
     if (inl1.msg != inl2.msg) return true;
-    if (inl1.opts.reply_markup.inline_keyboard != inl2.opts.reply_markup.inline_keyboard) return true;
+    //if (inl1.opts.reply_markup.inline_keyboard != inl2.opts.reply_markup.inline_keyboard) return true;
     if (inl1.opts.reply_markup.inline_keyboard.length != inl2.opts.reply_markup.inline_keyboard.length) return true;
     for (let i in inl1.opts.reply_markup.inline_keyboard) {
         if (!inl2.opts.reply_markup.inline_keyboard[i]) return true;
@@ -111,7 +111,7 @@ bot.on("callback_query", async (data) => {
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);
     }
-    else if (data.data.includes("del_item ")) {
+    else if (data.data.includes("delete_item ")) {
         const mod = parseInt(data.data.split(" ")[1]);
         const name = data.data.split(" ")[2];
         const { msg, opts } = await delItem(user_id, mod , name);

@@ -77,7 +77,7 @@ const inventory = {
     bags: 1,
     items: ["aaaaaaa1"],
     consumables: ["ccccccc1"],
-    materials: []
+    materials: ["mmmmmmm1"]
 };
 
 const coins = {
@@ -212,7 +212,7 @@ const HeroModel = (DataTypes) => {
         },
         zone: {
             type: DataTypes.STRING,
-            defaultValue: "t_0_0"
+            defaultValue: "0_0"
         },
         status: {
             type: DataTypes.STRING,
