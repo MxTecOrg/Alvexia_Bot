@@ -23,10 +23,10 @@ const materials = async (user_id, _page) => {
     let msg = "⛏️ *Materiales:*\n";
     
     for(let mat of inv.materials){
-        msg += "\n🆔 `" + mat.id + "` | " + mat.name + " - *" + mat.amount + "*";
+        msg += "\n🆔 `" + mat.id + "` - " + mat.name + " : *" + mat.amount + "*";
     }
     
-    msg += "\n\nUse /mat_desc [id] para ver la descripción del objeto.";
+    msg += "\n\nUse /matdesc [id] para ver la descripción del objeto.";
     
     return {msg , opts};
 };

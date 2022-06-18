@@ -255,8 +255,8 @@ class Material extends Model {
     }
 }
 
-Consumable.init(
-    ConsumableModel(DataTypes),
+Material.init(
+    MaterialModel(DataTypes),
     {
         sequelize: sequelize2,
         timestamps: false
