@@ -29,9 +29,25 @@ const getCity = (id) => {
     return MAP[x][y];
 };
 
+var DUNGEONS = {};
+
+const loadDungeons = () => {
+    const dungs = fs.readdirSync(config.DB + "/dungeons/");
+    
+    for(let d of dungs){
+        const id = d.replace(".json" , "");
+        DUNGEONS[name] = JSON.parse(fs.readFileSync(config.DB + "/dungeons/" + d));
+    }
+};
+
+const getDungeon = (id) => {
+    return DUNGEONS[id];
+};
+
 
 
 module.exports = {
     loadMap,
+    loadDungeons,
     getCity
 };

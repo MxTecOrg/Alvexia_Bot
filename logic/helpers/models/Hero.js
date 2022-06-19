@@ -198,6 +198,10 @@ const HeroModel = (DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: "na"
         },
+        arena: {
+            type: DataTypes.STRING,
+            defaultValue: "na"
+        },
         friends: {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(friends)
@@ -205,6 +209,10 @@ const HeroModel = (DataTypes) => {
         quests: {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(quests)
+        },
+        quests_completed: {
+            type: DataTypes.STRING,
+            defaultValue: "[]"
         },
         job: {
             type: DataTypes.STRING,

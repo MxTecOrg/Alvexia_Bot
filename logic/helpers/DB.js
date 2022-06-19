@@ -2,6 +2,7 @@ const config = require("../../config.js");
 const { Sequelize, Model, DataTypes, Op } = require("sequelize");
 const UserModel = require("./models/User.js");
 const HeroModel = require("./models/Hero.js");
+const ArenaModel = require("./models/Arena.js");
 const ItemModel = require("./models/Item.js");
 const ConsumableModel = require("./models/Consumable.js");
 const MaterialModel = require("./models/Material.js");
@@ -121,6 +122,53 @@ Hero.init(
 
 (async () => {
     await Hero.sync();
+})();
+
+
+/*********************
+ *  Modelo de Arena  *
+ *********************/
+class Arena extends Model {
+    getData() {
+        const rows = ["level", "class", "expertice", "attributes", "equip", "skills", "stats"];
+        let ret = {};
+        for (let row of rows) {
+            if (this[row]) {
+                try {
+                    ret[row] = JSON.parse(this[row]);
+                } catch (err) {
+                    ret[row] = this[row];
+                }
+            }
+        }
+        return ret;
+    }
+
+    async setData(obj) {
+        let parsedObj = {};
+        for (let o in obj) {
+            if (this[o] == undefined) continue;
+            parsedObj[o] = (typeof(obj) === "object" ? JSON.stringify(obj[o]) : obj[o]);
+        }
+        try {
+            await this.update(parsedObj);
+            return true;
+        } catch (err) {
+            console.err(err);
+            return false;
+        }
+    }
+}
+
+Arena.init(
+    ArenaModel(DataTypes),
+    {
+        sequelize
+    }
+);
+
+(async () => {
+    await Arena.sync();
 })();
 
 
@@ -272,6 +320,7 @@ Material.init(
 module.exports = {
     User,
     Hero,
+    Arena,
     Item,
     Consumable,
     Material,

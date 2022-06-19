@@ -1,0 +1,16 @@
+{
+    "name": "Bosque Tenebroso",
+    "desc": "El bosque tenebroso esta al este de Puerto Boscal , pocos valientes se atreven a entrar a el , muchos menos regresan.",
+    "level": {
+        "min" : 3,
+        "max": 5
+    },
+    "travel_time": 2,
+    "waves": [
+        []
+    ],
+    "reward": {
+        "xp": 20,
+        "gold": 10
+    }
+}
