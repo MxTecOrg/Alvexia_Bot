@@ -100,6 +100,7 @@ bot.on("callback_query", async (data) => {
 
     if (data.data.includes("items ")) {
         const mod = data.data.split(" ")[1];
+        delete seg[user_id];
         const { msg, opts } = await items(user_id, mod);
         if (msg == false) return;
         opts.chat_id = chat_id;
