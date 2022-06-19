@@ -61,7 +61,7 @@ bot.on("callback_query", async (data) => {
         bot.editMessageText(mess , opts);
     } else if (data.data == "arena_team_create") {
         bot.deleteMessage(chat_id , mess_id);
-        const {mess , opts} = createArenaTeam(user_id);
+        const {mess , opts} = await createArenaTeam(user_id);
         opts.chat_id = chat_id;
         opts.message_id = mess_id;
         bot.editMessageText(mess, opts);
