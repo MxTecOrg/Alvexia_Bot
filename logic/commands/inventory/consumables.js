@@ -321,7 +321,7 @@ bot.on("callback_query", async (data) => {
 bot.onText(/(\/consumables|Consumibles 🧪)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
-
+    if(seg[user_id]) delete seg[user_id];
     const { msg, opts } = await consumables(user_id);
     bot.sendMessage(chat_id, msg, opts);
 });

@@ -199,7 +199,7 @@ const delItemAccept = async (user_id, mod, name) => {
         inventory: inv
     });
 
-    const { msg, opts } = await items(chat_id, 0);
+    const { msg, opts } = await items(user_id, 0);
 
     return {
         msg,
@@ -341,7 +341,7 @@ const itemLook = async (item_id) => {
 bot.onText(/(\/items|🛡️ Objetos)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
-
+    if(seg[user_id]) delete seg[user_id];
     const { msg, opts } = await items(user_id);
     bot.sendMessage(chat_id, msg, opts);
 });

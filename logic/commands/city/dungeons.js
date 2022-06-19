@@ -45,15 +45,15 @@ const dungeons = async (user_id, ) => {
             ]
     }
     
-    const dung = getDungeon(city.dungeons[select]);
+    const dung = getDungeon(city.dungeons[select[user_id]]);
     
     msg += "🏚️* " + dung.name + "* \n\n" +
     "_" + dung.desc + "_\n\n" +
     "🆙 Nivel requerido: *" + dung.level.min + "-" + dung.level.max + "*\n" +
     "⏳ Tiempo de viaje: *" + dung.travel_time + "m* \n" +
     "🎁 Recompensas:\n" +
-    "🧠 XP: *" + dung.rewards.xp + "*\n" +
-    "💰 Oro: *" + dung.rewards.gold + "*";
+    "🧠 XP: *" + dung.reward.xp + "*\n" +
+    "💰 Oro: *" + dung.reward.gold + "*";
 
     let _opts = JSON.parse(JSON.stringify(opts));
     if (!seg[user_id]) seg[user_id] = { msg: msg + ".", _opts };
@@ -113,17 +113,17 @@ bot.on("callback_query", async (data) => {
         case "dungeon_prev":
             if(select[user_id]) select[user_id] -= 1;
             const { msg, opts } = await dungeons(user_id);
+            if(msg == false) return;
             opts.chat_id = chat_id;
             opts.message_id = mess_id;
-            if(msg == false) return;
             bot.editMessageText(msg, opts);
             break;
         case "dungeon_next":
             if(select[user_id]) select[user_id] -= 1;
             const { _msg, _opts } = await dungeons(user_id);
+            if(_msg == false) return;
             _opts.chat_id = chat_id;
             _opts.message_id = mess_id;
-            if(_msg == false) return;
             bot.editMessageText(_msg, _opts);
             break;
         default:

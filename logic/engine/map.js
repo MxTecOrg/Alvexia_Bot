@@ -36,7 +36,7 @@ const loadDungeons = () => {
     
     for(let d of dungs){
         const id = d.replace(".json" , "");
-        DUNGEONS[name] = JSON.parse(fs.readFileSync(config.DB + "/dungeons/" + d));
+        DUNGEONS[id] = JSON.parse(fs.readFileSync(config.DB + "/dungeons/" + d));
     }
 };
 
@@ -49,5 +49,6 @@ const getDungeon = (id) => {
 module.exports = {
     loadMap,
     loadDungeons,
-    getCity
+    getCity,
+    getDungeon
 };
