@@ -55,13 +55,16 @@ bot.on("callback_query", async (data) => {
 
 
     if (data.data == "arena_create") {
-        const {mess , opts} = await create(user_id);
+        const {mess , opts} = await arenaCreate(user_id);
         opts.chat_id = chat_id;
         opts.message_id = mess_id;
         bot.editMessageText(mess , opts);
     } else if (data.data == "arena_team_create") {
         bot.deleteMessage(chat_id , mess_id);
-        createArenaTeam(user_id);
+        const {mess , opts} = createArenaTeam(user_id);
+        opts.chat_id = chat_id;
+        opts.message_id = mess_id;
+        bot.editMessageText(mess, opts);
     }
 });
 
@@ -81,7 +84,7 @@ const createArenaTeam = async (user_id) => {
         return { msg: "Esta cuenta no existe , use el comando /start para crear una." };
     }
 
-    const arena = await Hero.findOne({
+    const arena = await Arena.findOne({
         where: {
             arena_id: hero.arena
         }
@@ -155,4 +158,4 @@ bot.onText(/(\/arena_create|Crear Equipo 🧾)/, async (data) => {
 
 
 
-module.exports = materials;
+module.exports = arenaCreate;
