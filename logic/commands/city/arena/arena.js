@@ -4,6 +4,8 @@ const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op , Arena } = require(config.LOGIC + "/helpers/DB.js");
 const { getCity } = require(config.LOGIC + "/engine/map.js");
 require("./create.js");
+require("./join.js");
+require("./leave.js");
 
 
 const arena = async (user_id, chat_id) => {

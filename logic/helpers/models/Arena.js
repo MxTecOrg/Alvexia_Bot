@@ -15,7 +15,7 @@ const ArenaModel = (DataTypes) => {
             defaultValue: 0
         },
         owner: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
             unique: true
         },

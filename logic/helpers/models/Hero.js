@@ -202,6 +202,10 @@ const HeroModel = (DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: "na"
         },
+        arena_time: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0
+        },
         friends: {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(friends)
