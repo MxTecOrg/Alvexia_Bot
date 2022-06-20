@@ -29,6 +29,10 @@ const getCity = (id) => {
     return MAP[x][y];
 };
 
+const getMap = () => {
+    return MAP;
+};
+
 var DUNGEONS = {};
 
 const loadDungeons = () => {
@@ -50,5 +54,6 @@ module.exports = {
     loadMap,
     loadDungeons,
     getCity,
+    getMap,
     getDungeon
 };

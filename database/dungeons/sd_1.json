@@ -6,6 +6,7 @@
         "max": 5
     },
     "travel_time": 2,
+    "energy_cost": 5,
     "waves": [
         []
     ],

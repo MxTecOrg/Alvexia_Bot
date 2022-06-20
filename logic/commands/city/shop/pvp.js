@@ -1,4 +1,4 @@
-const config = require("../../../config.js");
+const config = require("../../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op, Item } = require(config.LOGIC + "/helpers/DB.js");
@@ -220,7 +220,7 @@ const shopBuyAccept = async (user_id, mod, name) => {
         coins: coins
     });
 
-    const { msg, opts } = await items(user_id, 0);
+    const { msg, opts } = await shopPvp(user_id, 0);
 
     return {
         msg,
@@ -308,7 +308,7 @@ const shopLook = async (item_id) => {
 };
 
 
-bot.onText(/(\/shop_pvp|Tienda pvp 🔱)/, async (data) => {
+bot.onText(/(\/shop_pvp|Tienda PvP 🔱)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
     if (seg[user_id]) delete seg[user_id];

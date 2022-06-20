@@ -6,6 +6,7 @@ const { getCity } = require(config.LOGIC + "/engine/map.js");
 require("./dungeons.js");
 require("./arena/arena.js");
 require("./shop/shop.js");
+require("./travel.js");
 
 const city = async (user_id, chat_id) => {
     const opts = {

@@ -50,6 +50,7 @@ const dungeons = async (user_id, ) => {
     msg += "🏚️* " + dung.name + "* \n\n" +
     "_" + dung.desc + "_\n\n" +
     "🆙 Nivel requerido: *" + dung.level.min + "-" + dung.level.max + "*\n" +
+    "⚡ Costo de energia: *" + dung.energy_cost + "*\n" +
     "⏳ Tiempo de viaje: *" + dung.travel_time + "m* \n" +
     "🎁 Recompensas:\n" +
     "🧠 XP: *" + dung.reward.xp + "*\n" +

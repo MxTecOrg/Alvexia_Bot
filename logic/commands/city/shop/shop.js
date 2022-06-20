@@ -4,7 +4,7 @@ const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const { getCity } = require(config.LOGIC + "/engine/map.js");
 require("./pve");
-require("./pve");
+require("./pvp");
 
 const shop = async (user_id, chat_id) => {
     const opts = {
