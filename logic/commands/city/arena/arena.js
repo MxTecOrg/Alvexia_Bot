@@ -49,7 +49,8 @@ const arena = async (user_id, chat_id) => {
     const menu_str = "🏟️ *Arena*:\n\n" +
     "📜 Equipo: *" + (hero.arena == "na" ? "Ninguno" : arena.name) + "*\n" +
     (arena ? "🆔 : `" + arena.arena_id + "`\n" : "") +
-    "🔱 Indice de Arena: *" + (hero.arena == "na" ? 0 : arena.rating) + "*";
+    "🔱 Indice de Arena: *" + (hero.arena == "na" ? 0 : arena.rating) + "*\n" +
+    "🎫 Entradas: *" + (hero.arena == "na" ? 0 : arena.entries) + "*";
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

@@ -21,5 +21,6 @@
         "pve": [],
         "pvp": []
     },
+    "quests": [],
     "dungeons" : ["sd_1"]
 }

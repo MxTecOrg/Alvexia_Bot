@@ -90,9 +90,7 @@ const coins = {
 
 const friends = {
     friends: [],
-    requests: [],
-    invitations: [],
-    ban: []
+    refBy : ""
 };
 
 const quests = [{
@@ -214,7 +212,7 @@ const HeroModel = (DataTypes) => {
             type: DataTypes.STRING,
             defaultValue: JSON.stringify(quests)
         },
-        quests_completed: {
+        quests_daily: {
             type: DataTypes.STRING,
             defaultValue: "[]"
         },

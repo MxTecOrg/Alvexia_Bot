@@ -1,7 +1,9 @@
 const config = require("../../config.js");
 const fs = require("fs");
 const { Hero , Item } = require(config.LOGIC + "/helpers/DB.js");
+const bot = require(config.DIRNAME + "/main.js");
 const attrDB = JSON.parse(fs.readFileSync(config.DB + "/attr_db.json"));
+const level_db = JSON.parse(fs.readFileSync(config.DB + "/level_db.json"));
 
 const updateStats = async (user_id) => {
     const hero = await Hero.findOne({
@@ -141,9 +143,44 @@ const getEnergyTime = (user_id) => {
     return toEnd[user_id];
 };
 
+const addXp = async (user_id , chat_id , xp) => {
+    const hero = await Hero.findOne({
+        where: {
+            user_id: user_id
+        }
+    });
+    
+    if (!hero) return null;
+    
+    const extraXp = JSON.parse(hero.total_attr).xp_extra;
+    
+    const xpUp = level_db[hero.level - 1];
+    
+    hero.xp += (xp + (xp * extraXp));
+    
+    if(hero.xp >= xpUp){
+        hero.xp -= xpUp;
+        hero.level += 1;
+        let attr_points = JSON.parse(hero.attr_points);
+        attr_points.points += config.PA_LVL;
+        
+        const upd = await hero.setData({
+            xp : hero.xp,
+            level : hero.level,
+            attr_points: attr_points
+        });
+        return bot.sendMessage(chat_id , "🎉 Enhorabuena a alcanzado un nuevo nivel. \nUse /pa para añadir los 💡 puntos de talentos adquiridos.");
+    }
+    await hero.setData({
+        xp: hero.xp
+    });
+    
+}
+
 module.exports = {
     updateStats,
     fillHeal,
     energyReg,
-    getEnergyTime
+    getEnergyTime,
+    addXp
 };

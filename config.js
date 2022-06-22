@@ -1,6 +1,6 @@
 /* Base Config */
 const config = {
-    URL: "https://mxtecorgalvexiabot.glitch.me",
+    URL: "https://t.me/sin_nombre_bot",
     PORT: process.env.PORT || 8081, //port
     DIRNAME: __dirname, //root folder
     DB: __dirname + "/database", //database
@@ -11,7 +11,11 @@ const config = {
         createCost: 100,
         initalRating: 0,
         callDifference: 125
-    }
+    },
+    REFERRAL: {
+        gems: 5
+    },
+    PA_LVL : 5
 };
 
 module.exports = config;

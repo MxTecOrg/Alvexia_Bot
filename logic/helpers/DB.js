@@ -6,6 +6,7 @@ const ArenaModel = require("./models/Arena.js");
 const ItemModel = require("./models/Item.js");
 const ConsumableModel = require("./models/Consumable.js");
 const MaterialModel = require("./models/Material.js");
+const PartyModel = require("./models/Party.js");
 
 /**********************
  * Iniciando Conexion *
@@ -173,6 +174,53 @@ Arena.init(
 
 
 /*********************
+ *  Modelo de Grupo  *
+ *********************/
+class Party extends Model {
+    getData() {
+        const rows = ["level", "class", "expertice", "attributes", "equip", "skills", "stats"];
+        let ret = {};
+        for (let row of rows) {
+            if (this[row]) {
+                try {
+                    ret[row] = JSON.parse(this[row]);
+                } catch (err) {
+                    ret[row] = this[row];
+                }
+            }
+        }
+        return ret;
+    }
+
+    async setData(obj) {
+        let parsedObj = {};
+        for (let o in obj) {
+            if (this[o] == undefined) continue;
+            parsedObj[o] = (typeof(obj) === "object" ? JSON.stringify(obj[o]) : obj[o]);
+        }
+        try {
+            await this.update(parsedObj);
+            return true;
+        } catch (err) {
+            console.err(err);
+            return false;
+        }
+    }
+}
+
+Party.init(
+    PartyModel(DataTypes),
+    {
+        sequelize
+    }
+);
+
+(async () => {
+    await Party.sync();
+})();
+
+
+/*********************
  *  Modelo de  Item  *
  *********************/
 class Item extends Model {
@@ -321,6 +369,7 @@ module.exports = {
     User,
     Hero,
     Arena,
+    Party,
     Item,
     Consumable,
     Material,

@@ -33,7 +33,8 @@ bot.onText(/^\/start.*/, async (data) => {
 
     if (!user) {
         newUser[user_id] = {
-            nickname: "na"
+            nickname: "na",
+            refBy : data.text.split(" ")[1]
         };
         typeReq[user_id] = "nickname";
         return bot.sendMessage(chat_id, wlc);
@@ -88,14 +89,37 @@ bot.on("callback_query", async (data) => {
         case "start_accept":
             bot.deleteMessage(chat_id, mess_id);
             if (newUser[user_id].nickname) {
+                const friends = {
+                    friends: [],
+                    refBy : ""
+                }
+                
+                const ref = await Hero.findOne({
+                    where: {
+                        user_id : newUser[user_id].refBy
+                    }
+                });
+                
+                if(ref){
+                    friends.refBy = newUser[user_id].refBy;
+                    let refFriends = JSON.parse(ref.friends);
+                    refFriends.friends.push(user_id);
+                    ref.setData({
+                        friends : refFriends
+                    });
+                    bot.sendMessage(ref.chat_id, "El heroe '" + newUser[user_id].nickname + "' se a unido al mundo usando tu link de referencia.");
+                }
+                
                 const hero = await Hero.create({
                     user_id: user_id,
-                    nickname: newUser[user_id].nickname
+                    nickname: newUser[user_id].nickname,
+                    friends: JSON.stringify(friends)
                 });
                 if (!hero) {
                     typeReq[user_id] = "nickname";
                     return bot.sendMessage(chat_id, err_str);
                 }
+                
                 const user = await User.create({
                     user_id: user_id,
                     chat_id: chat_id

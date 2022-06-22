@@ -1,7 +1,7 @@
 const ArenaModel = (DataTypes) => {
     return {
         arena_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             unique: true,
             allowNull: false
         },
@@ -13,6 +13,10 @@ const ArenaModel = (DataTypes) => {
         rating: {
             type: DataTypes.INTEGER,
             defaultValue: 0
+        },
+        entries: {
+            type: DataTypes.INTEGER,
+            defaultValue: 10
         },
         owner: {
             type: DataTypes.INTEGER,

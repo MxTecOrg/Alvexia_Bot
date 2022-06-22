@@ -2,31 +2,22 @@ const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
-const { getCity } = require(config.LOGIC + "/engine/map.js");
-require("./dungeons.js");
-require("./arena/arena.js");
-require("./shop/shop.js");
-require("./travel.js");
-require("./tabern/tabern.js");
 
-const city = async (user_id, chat_id) => {
+const tabern = async (user_id, chat_id) => {
     const opts = {
         reply_markup: {
             resize_keyboard: true,
             keyboard: [
                 [
-                    "🏚️ Mazmorras ",
-                    " Arena 🏟️"
+                    "🎱 Lotería ",
+                    " Carreras 🐴"
                 ],
                 [
-                    "🏤 Taberna ",
-                    " Tienda 🏪"
+                    "🎰 Tragaperras ",
+                    " Dado 🎲"
                 ],
                 [
-                    "📜 Se busca ",
-                    " Viajar 🗺️"
-                ],
-                [
+                    "🏘️ Ciudad",
                     "Atrás ↩️"
                 ]
             ]
@@ -44,18 +35,16 @@ const city = async (user_id, chat_id) => {
 
     const zone = getCity(hero.zone);
 
-    const menu_str = "🏘️ *Ciudad*: \n\n" +
-        "🧾 Nombre: *" + zone.name + "* \n" +
-        "_" + zone.desc + "_\n\n" +
-        "🌲 Bosque: *" + zone.level.min + " - " + zone.level.max + " lvl*";
+    const menu_str = "🏤 *Taberna:*\n\n"+
+    "⚒️ Actualmente en Construcción";
     bot.sendMessage(chat_id, menu_str, opts);
 };
 
-bot.onText(/(\/city|🏘️ Ciudad)/, async (data) => {
+bot.onText(/(\/tabern|🏤 Taberna)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 
-    city(user_id, chat_id);
+    tabern(user_id, chat_id);
 });
 
-module.exports = city;
+module.exports = tabern;

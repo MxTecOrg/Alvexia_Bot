@@ -26,7 +26,7 @@ const travel = async (user_id, x, y) => {
                     text: "↗️",
                     callback_data: "map " + (x ? x - 1 : ax - 1) + " " + (y ? y + 1 : ay + 1)
                     }],
-                    [{ text: "⬅️", callback_data: "map " + (x ? x : ax) + " " + (y ? y - 1 : ay - 1) }, { text: "🐾 Viajar", callback_data: "travel "(x ? x : ax) + " " + (y ? y : xy) }, { text: "➡️", callback_data: "map " + (x ? x : y) + " " + (y ? y + 1 : ay + 1) }],
+                    [{ text: "⬅️", callback_data: "map " + (x ? x : ax) + " " + (y ? y - 1 : ay - 1) }, { text: "🐾 Viajar", callback_data: "travel " + (x ? x : ax) + " " + (y ? y : ay) }, { text: "➡️", callback_data: "map " + (x ? x : y) + " " + (y ? y + 1 : ay + 1) }],
                     [{
                         text: "↙️",
                         callback_data: "map " + (x ? x + 1 : ax + 1) + " " + (y ? y - 1 : ay - 1)
@@ -46,10 +46,10 @@ const travel = async (user_id, x, y) => {
     if (y < 0) y = 0;
     if (y >= _map[0].length) y = (_map[0].length - 1);
 
-    const city = getCity(hero.zone);
+    const city = getCity((x ? x : ax) + "_" + (y ? y : ay));
 
     let msg = "🗺️ *Viajar:*\n\n" +
-        "🌐 Coordenadas: `x:" + x + " y:" + y + "`";
+        "🌐 Coordenadas: `x:" + (x ? x : ax) + " y:" + (y ? y : ay) + "`\n";
 
     if (!city) {
         msg += "⚒️ Esta ciudad aun no a sido fundada.";
@@ -142,7 +142,7 @@ bot.on("callback_query", async (data) => {
     }
 });
 
-bot.onText(/(\/travel|Viajar 🗺️ )/, async (data) => {
+bot.onText(/(\/travel|Viajar 🗺️)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 
