@@ -1,4 +1,4 @@
-const config = require("../../../config.js");
+const config = require("../../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");

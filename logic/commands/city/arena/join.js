@@ -160,7 +160,7 @@ bot.onText(/(\/arena_join|📜 Unirse a Equipo)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 
-    const { msg, opts } = await arenaCreate(user_id);
+    const { msg, opts } = await arenaJoin(user_id);
     bot.sendMessage(chat_id, msg, opts);
 });
 

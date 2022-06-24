@@ -2,6 +2,7 @@ const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
+require("./party/party.js");
 
 const social = async (user_id, chat_id) => {
     const opts = {

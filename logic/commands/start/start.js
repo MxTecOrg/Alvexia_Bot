@@ -34,7 +34,7 @@ bot.onText(/^\/start.*/, async (data) => {
     if (!user) {
         newUser[user_id] = {
             nickname: "na",
-            refBy : data.text.split(" ")[1]
+            refBy : (data.text.split(" ")[1] ? parseInt(data.text.split(" ")[1]) : 0)
         };
         typeReq[user_id] = "nickname";
         return bot.sendMessage(chat_id, wlc);
@@ -91,7 +91,7 @@ bot.on("callback_query", async (data) => {
             if (newUser[user_id].nickname) {
                 const friends = {
                     friends: [],
-                    refBy : ""
+                    refBy : 0
                 }
                 
                 const ref = await Hero.findOne({

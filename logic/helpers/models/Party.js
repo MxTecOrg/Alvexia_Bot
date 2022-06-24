@@ -1,7 +1,7 @@
 const PartyModel = (DataTypes) => {
     return {
         party_id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             unique: true,
             allowNull: false
         },
@@ -21,6 +21,10 @@ const PartyModel = (DataTypes) => {
         members: {
             type: DataTypes.STRING,
             defaultValue: "[]"
+        },
+        zone: {
+            type: DataTypes.STRING,
+            allowNull: false
         }
     };
 };

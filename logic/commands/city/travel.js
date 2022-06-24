@@ -51,7 +51,7 @@ const travel = async (user_id, x, y) => {
     let msg = "🗺️ *Viajar:*\n\n" +
         "🌐 Coordenadas: `x:" + (x ? x : ax) + " y:" + (y ? y : ay) + "`\n";
 
-    if (!city) {
+    if (city == "na") {
         msg += "⚒️ Esta ciudad aun no a sido fundada.";
     } else {
         msg += "🏘️ Ciudad: *" + city.name + "*\n" +

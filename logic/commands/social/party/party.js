@@ -2,6 +2,8 @@ const config = require("../../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op , Party } = require(config.LOGIC + "/helpers/DB.js");
+require("./join.js");
+require("./create.js");
 
 const party = async (user_id, chat_id) => {
     const opts = {
