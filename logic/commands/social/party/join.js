@@ -167,7 +167,7 @@ bot.onText(/(^\/party_join.*|🔍 Unirse a Grupo)/, async (data) => {
     const chat_id = data.chat.id;
 
     let msg , opts;
-    if(!data.text.split(" ")[1]) {
+    if(data.text.split(" ").length != 2) {
        const {msg , opts} = await partyJoin(user_id);
        bot.sendMessage(chat_id, msg, opts);
     }else {

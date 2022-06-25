@@ -36,9 +36,11 @@ const party = async (user_id, chat_id) => {
             party_id : hero.party
         }
     });
+    
+    console.log(hero.party);
 
     const menu_str = "👥 *Grupo:*\n\n" + 
-    "👥 Grupo: *" + (_party ? _party.name : "Ninguno") + "*" +
+    "👥 : *" + (_party ? _party.name : "Ninguno") + "*" +
     (_party ? "\n♥️ Estado : /ptstatus" : "");
     bot.sendMessage(chat_id, menu_str, opts);
 };

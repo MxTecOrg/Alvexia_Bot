@@ -59,7 +59,7 @@ const pa = async (user_id) => {
 };
 
 
-bot.onText(/(\/pa|PA 💡)/, async (data) => {
+bot.onText(/(\/ap|PA 💡)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 

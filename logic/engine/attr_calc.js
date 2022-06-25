@@ -168,7 +168,7 @@ const addXp = async (user_id , chat_id , xp) => {
             level : hero.level,
             attr_points: attr_points
         });
-        return bot.sendMessage(chat_id , "🎉 Enhorabuena a alcanzado un nuevo nivel. \nUse /pa para añadir los 💡 puntos de talentos adquiridos.");
+        return bot.sendMessage(chat_id , "🎉 Enhorabuena a alcanzado un nuevo nivel. \nUse /ap para añadir los 💡 puntos de talentos adquiridos.");
     }
     await hero.setData({
         xp: hero.xp

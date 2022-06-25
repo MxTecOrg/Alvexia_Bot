@@ -28,7 +28,7 @@ const partyCreate = async (user_id) => {
 
     const party = await Party.findOne({
         where: {
-            arena_id: hero.party
+            party_id: hero.party
         }
     });
 
@@ -84,7 +84,7 @@ const partyAcceptCreate = async (user_id) => {
 
     const party = await Party.findOne({
         where: {
-            arena_id: hero.arena
+            party_id: hero.party
         }
     });
 
@@ -119,7 +119,7 @@ bot.on("message", async (data) => {
 
     const party = await Party.findOne({
         where: {
-            arena_id: hero.arena
+            party_id: hero.party
         }
     });
 
@@ -136,7 +136,7 @@ bot.on("message", async (data) => {
         zone: hero.zone
     });
     
-    if(cparty) return bot.sendMessage(chat_id, "Hay otro equipo con este nombre.");
+    if(!cparty) return bot.sendMessage(chat_id, "Hay otro equipo con este nombre.");
     
     await hero.setData({
         party: cparty.party_id
