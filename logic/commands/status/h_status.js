@@ -103,17 +103,7 @@ bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
     const chat_id = data.message.chat.id;
     const mess_id = data.message.message_id;
-    const hero = await Hero.findOne({
-        where: {
-            user_id: user_id
-        }
-    });
-
-
-    if (!hero) {
-        bot.deleteMessage(chat_id , mess_id);
-        return bot.sendMessage(chat_id , "Esta cuenta no existe , use el comando /start para crear una.");
-    }
+    
 
     if(data.data == "stadistics") {
         const {msg , opts} = await stadistics(user_id , chat_id);

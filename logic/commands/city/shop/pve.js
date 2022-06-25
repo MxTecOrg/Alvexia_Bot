@@ -111,7 +111,7 @@ bot.on("callback_query", async (data) => {
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);
     }
-    else if (data.data.includes("shop_pvp_buy ")) {
+    else if (data.data.includes("shop_pve_buy ")) {
         const mod = parseInt(data.data.split(" ")[1]);
         const name = data.data.split(" ")[2];
         const { msg, opts } = await shopBuy(user_id, mod , name);
@@ -120,7 +120,7 @@ bot.on("callback_query", async (data) => {
         opts.message_id = mess_id;
         bot.editMessageText(msg, opts);
     }
-    else if (data.data.includes("shop_pvp_buy_accept ")) {
+    else if (data.data.includes("shop_pve_buy_accept ")) {
         const mod = parseInt(data.data.split(" ")[1]);
         const name = data.data.split(" ")[2];
         const { msg, opts } = await shopBuyAccept(user_id, mod, name);

@@ -153,9 +153,10 @@ const addXp = async (user_id , chat_id , xp) => {
     if (!hero) return null;
     console.log(hero.xp);
     const extraXp = JSON.parse(hero.total_attr).xp_extra;
-    
+    console.log(JSON.parse(hero.total_attr));
+    console.log(extraXp);
     const xpUp = level_db[hero.level - 1];
-    
+    console.log(xpUp);
     hero.xp += (xp + (xp * extraXp));
     console.log(hero.xp);
     if(hero.xp >= xpUp){
