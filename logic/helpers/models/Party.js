@@ -11,7 +11,6 @@ const PartyModel = (DataTypes) => {
         },
         status: {
             type: DataTypes.STRING,
-            allowNull: false,
             defaultValue: "rest"
         },
         owner: {

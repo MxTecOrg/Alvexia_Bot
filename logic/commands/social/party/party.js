@@ -4,6 +4,8 @@ const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op , Party } = require(config.LOGIC + "/helpers/DB.js");
 require("./join.js");
 require("./create.js");
+require("./leave.js");
+require("./chat.js");
 
 const party = async (user_id, chat_id) => {
     const opts = {
@@ -37,11 +39,10 @@ const party = async (user_id, chat_id) => {
         }
     });
     
-    console.log(hero.party);
 
     const menu_str = "👥 *Grupo:*\n\n" + 
     "👥 : *" + (_party ? _party.name : "Ninguno") + "*" +
-    (_party ? "\n♥️ Estado : /ptstatus" : "");
+    (_party ? "\n♥️ Estado : /sparty" : "");
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

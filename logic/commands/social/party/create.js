@@ -38,7 +38,7 @@ const partyCreate = async (user_id) => {
             callback_data: "party_create"
         };
 
-        return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /ptleave" }
+        return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty" }
 
     }
 
@@ -88,7 +88,7 @@ const partyAcceptCreate = async (user_id) => {
         }
     });
 
-    if (party) return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /ptleave", opts }
+    if (party) return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty", opts }
 
     setName[user_id] = true;
 
@@ -116,20 +116,20 @@ bot.on("message", async (data) => {
     if (!hero) {
         return bot.sendMessage(chat_id , "Esta cuenta no existe , use el comando /start para crear una.");
     }
-
+    
     const party = await Party.findOne({
         where: {
             party_id: hero.party
         }
     });
 
-    if (party) return bot.sendMessage(chat_id , "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /ptleave");
+    if (party) return bot.sendMessage(chat_id , "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty");
     
     
     
-    
+    const pid = uid.alphanum(6);
     const cparty = await Party.create({
-        party_id: uid.alphanum(6),
+        party_id: pid,
         name: data.text,
         owner: user_id,
         members: JSON.stringify([user_id]),
@@ -139,14 +139,14 @@ bot.on("message", async (data) => {
     if(!cparty) return bot.sendMessage(chat_id, "Hay otro equipo con este nombre.");
     
     await hero.setData({
-        party: cparty.party_id
+        party: pid
     });
     
     return bot.sendMessage(chat_id , "El equipo `" + data.text + "` se creo correctamente.");
     
 });
 
-bot.onText(/(\/party_create|Crear Grupo 📝)/, async (data) => {
+bot.onText(/(\/cparty|Crear Grupo 📝)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 

@@ -1,7 +1,7 @@
 const config = require("../../../config.js");
 const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
-const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
+const { User, Hero, Op , Party , Guild } = require(config.LOGIC + "/helpers/DB.js");
 const {getEnergyTime} = require(config.LOGIC + "/engine/attr_calc.js");
 const {getCity} = require(config.LOGIC + "/engine/map.js");
 const level_db = JSON.parse(fs.readFileSync(config.DB + "/level_db.json"));
@@ -48,6 +48,21 @@ const menu = async (user_id, chat_id) => {
     
     const attr = hero.getAttrData();
     const eTime = getEnergyTime(user_id);
+    let hparty , hguild;
+    if(hero.party != "na"){
+        hparty = await Party.findOne({
+            where: {
+                party_id : hero.party
+            }
+        });
+    }
+    if (hero.guild != "na") {
+        hguild = await Guild.findOne({
+            where: {
+                guild_id: guild.party
+            }
+        });
+    }
 
     const menu_str = "👤 *Estado:* \n\n" +
     "👤 Heroe: _" + hero.nickname + "_ \n" +
@@ -58,7 +73,8 @@ const menu = async (user_id, chat_id) => {
     "🔷 : *" + hero.mp + "/" + attr.stats.mp + "*\n" +
     "🗺️ Zona:* " + getCity( hero.zone ).name + "*\n" +
     "🕹️ Estado:* " + hero.status + "\n*" +
-    "👾 Grupo: *" + (hero.party != "na" ? hero.party : "Ninguno") + "* \n";
+    "👥 Grupo: *" + (hparty ? hparty.name : "Ninguno") + "* \n" +
+    "🔰 Gremio: *" + (hguild ? hguild.name : "Ninguno");
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

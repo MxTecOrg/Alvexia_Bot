@@ -1,6 +1,6 @@
 /* Base Config */
 const config = {
-    URL: "https://t.me/sin_nombre_bot",
+    URL: "https://t.me/Alvexia_Text_Bot",
     PORT: process.env.PORT || 8081, //port
     DIRNAME: __dirname, //root folder
     DB: __dirname + "/database", //database

@@ -38,7 +38,7 @@ const partyJoin = async (user_id) => {
             callback_data: "party_create"
         };
 
-        return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /ptleave" }
+        return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty" }
 
     }
 
@@ -88,7 +88,7 @@ const joinPartyTeam = async (user_id) => {
         }
     });
 
-    if (party) return { msg: "🧾 Se encuentra actualmente registrado en un equipo de party. Para crear uno debe salir del equipo actual y esperar un plazo de 24 horas antes de unirse a otro.\n\nPara dejar el equipo de party actual use el comando /leaveparty", opts };
+    if (party) return { msg: "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty", opts };
 
     setName[user_id] = true;
 
@@ -111,8 +111,9 @@ const joinPt = async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
     
+    const text = data.text.split(" ")[1];
     const char = /^[a-zA-Z0-9]+$/;
-    if(!char.test(data.text)) return bot.sendMessage(chat_id , "El id solo puede contener caracteres alfanuméricos.");
+    if(!char.test(text)) return bot.sendMessage(chat_id , "El id solo puede contener caracteres alfanuméricos.");
     
     const hero = await Hero.findOne({
         where: {
@@ -130,12 +131,12 @@ const joinPt = async (data) => {
         }
     });
 
-    if (party) return bot.sendMessage(chat_id , "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /ptleave");
+    if (party) return bot.sendMessage(chat_id , "🧾 Se encuentra actualmente en un equipo. Para crear uno debe salir del equipo actual , puede dejar su equipo con el comando /lparty");
     
     
     const cparty = await Party.findOne({
         where: {
-            party_id : data.text
+            party_id : text
         }
     });
     
@@ -151,7 +152,7 @@ const joinPt = async (data) => {
     members.push(user_id);
     
     await hero.setData({
-        party: cparty.party_id
+        party: text
     });
     
     await cparty.setData({
@@ -162,7 +163,7 @@ const joinPt = async (data) => {
     
 };
 
-bot.onText(/(^\/party_join.*|🔍 Unirse a Grupo)/, async (data) => {
+bot.onText(/(^\/jparty.*|🔍 Unirse a Grupo)/, async (data) => {
     const user_id = data.from.id;
     const chat_id = data.chat.id;
 
