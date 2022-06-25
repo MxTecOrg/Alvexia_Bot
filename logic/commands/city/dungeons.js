@@ -4,7 +4,8 @@ const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const { getCity, getDungeon } = require(config.LOGIC + "/engine/map.js");
 
-var select = {} , seg = {};
+var select = {},
+    seg = {};
 
 const dungeons = async (user_id, ) => {
     let opts = {
@@ -44,17 +45,17 @@ const dungeons = async (user_id, ) => {
                     }]
             ]
     }
-    
+
     const dung = getDungeon(city.dungeons[select[user_id]]);
-    
+
     msg += "🏚️* " + dung.name + "* \n\n" +
-    "_" + dung.desc + "_\n\n" +
-    "🆙 Nivel requerido: *" + dung.level.min + "-" + dung.level.max + "*\n" +
-    "⚡ Costo de energia: *" + dung.energy_cost + "*\n" +
-    "⏳ Tiempo de viaje: *" + dung.travel_time + "m* \n" +
-    "🎁 Recompensas:\n" +
-    "🧠 XP: *" + dung.reward.xp + "*\n" +
-    "💰 Oro: *" + dung.reward.gold + "*";
+        "_" + dung.desc + "_\n\n" +
+        "🆙 Nivel requerido: *" + dung.level.min + "-" + dung.level.max + "*\n" +
+        "⚡ Costo de energia: *" + dung.energy_cost + "*\n" +
+        "⏳ Tiempo de viaje: *" + dung.travel_time + "m* \n" +
+        "🎁 Recompensas:\n" +
+        "🧠 XP: *" + dung.reward.xp + "*\n" +
+        "💰 Oro: *" + dung.reward.gold + "*";
 
     let _opts = JSON.parse(JSON.stringify(opts));
     if (!seg[user_id]) seg[user_id] = { msg: msg + ".", _opts };
@@ -93,42 +94,45 @@ bot.on("callback_query", async (data) => {
     const user_id = data.from.id;
     const chat_id = data.message.chat.id;
     const mess_id = data.message.message_id;
-    const hero = await Hero.findOne({
-        where: {
-            user_id: user_id
-        }
-    });
 
 
-    if (!hero) {
-        bot.deleteMessage(chat_id, mess_id);
-        return bot.sendMessage(chat_id, "Esta cuenta no existe , use el comando /start para crear una.");
-    }
+    if (data.data.includes("dungeon_")) {
+        const hero = await Hero.findOne({
+            where: {
+                user_id: user_id
+            }
+        });
 
 
-    if (data.data.includes("dungeon_")) switch (data.data) {
-        case "dungeon_start":
+        if (!hero) {
             bot.deleteMessage(chat_id, mess_id);
-            //(user_id, chat_id);
-            break;
-        case "dungeon_prev":
-            if(select[user_id]) select[user_id] -= 1;
-            const { msg, opts } = await dungeons(user_id);
-            if(msg == false) return;
-            opts.chat_id = chat_id;
-            opts.message_id = mess_id;
-            bot.editMessageText(msg, opts);
-            break;
-        case "dungeon_next":
-            if(select[user_id]) select[user_id] -= 1;
-            const { _msg, _opts } = await dungeons(user_id);
-            if(_msg == false) return;
-            _opts.chat_id = chat_id;
-            _opts.message_id = mess_id;
-            bot.editMessageText(_msg, _opts);
-            break;
-        default:
-            break;
+            return bot.sendMessage(chat_id, "Esta cuenta no existe , use el comando /start para crear una.");
+        }
+
+        switch (data.data) {
+            case "dungeon_start":
+                bot.deleteMessage(chat_id, mess_id);
+                //(user_id, chat_id);
+                break;
+            case "dungeon_prev":
+                if (select[user_id]) select[user_id] -= 1;
+                const { msg, opts } = await dungeons(user_id);
+                if (msg == false) return;
+                opts.chat_id = chat_id;
+                opts.message_id = mess_id;
+                bot.editMessageText(msg, opts);
+                break;
+            case "dungeon_next":
+                if (select[user_id]) select[user_id] -= 1;
+                const { _msg, _opts } = await dungeons(user_id);
+                if (_msg == false) return;
+                _opts.chat_id = chat_id;
+                _opts.message_id = mess_id;
+                bot.editMessageText(_msg, _opts);
+                break;
+            default:
+                break;
+        }
     }
 });
 

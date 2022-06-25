@@ -3,6 +3,7 @@ const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 const QUESTS = require(config.LOGIC + "/engine/quests.js");
+const {addXp} = require(config.LOGIC + "/engine/attr_calc.js");
 
 var aQuest = {};
 
