@@ -5,7 +5,7 @@ const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 
 const friends = async (user_id, chat_id) => {
     const opts = {
-        parse_mode: "Markdown"
+        
     };
 
     const hero = await Hero.findOne({
@@ -20,10 +20,9 @@ const friends = async (user_id, chat_id) => {
     
 
     const menu_str = "🧙🏻‍♂️ *Amigos:*\n\n" +
-    "👥 Amigos Referidos: *" + fri + "*\n" +
-    "🔗 Link de Referencia: " + config
-    URL + "?start=" + user_id + "\n" +
-    "\n_Cada usuario referido que llegue a nivel 5 te otorgará _ *" + config.REFERRAL.gems + "*💎";
+    "👥 Amigos Referidos: " + fri + "\n" +
+    "🔗 Link de Referencia: " + config.URL + "?start=" + user_id + "\n" +
+    "\nCada usuario referido que llegue a nivel 5 te otorgará  " + config.REFERRAL.gems + "💎";
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

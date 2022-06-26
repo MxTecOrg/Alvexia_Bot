@@ -12,3 +12,6 @@ quests.load();
 
 module.exports = bot;
 require(config.LOGIC + "/router.js");
+
+/* Guards */
+require(config.LOGIC + "/guards/guards.js");

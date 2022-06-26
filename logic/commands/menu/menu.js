@@ -48,7 +48,7 @@ const menu = async (user_id, chat_id) => {
     
     const attr = hero.getAttrData();
     const eTime = getEnergyTime(user_id);
-    let hparty , hguild;
+    let hparty , hcastle;
     if(hero.party != "na"){
         hparty = await Party.findOne({
             where: {
@@ -56,10 +56,10 @@ const menu = async (user_id, chat_id) => {
             }
         });
     }
-    if (hero.guild != "na") {
-        hguild = await Guild.findOne({
+    if (hero.castle != "na") {
+        hguild = await Castle.findOne({
             where: {
-                guild_id: guild.party
+                castle_id: hero.castle
             }
         });
     }
@@ -74,7 +74,7 @@ const menu = async (user_id, chat_id) => {
     "🗺️ Zona:* " + getCity( hero.zone ).name + "*\n" +
     "🕹️ Estado:* " + hero.status + "\n*" +
     "👥 Grupo: *" + (hparty ? hparty.name : "Ninguno") + "* \n" +
-    "🔰 Gremio: *" + (hguild ? hguild.name : "Ninguno");
+    "🏰 Castillo: *" + (hcastle ? castle.name : "Ninguno");
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

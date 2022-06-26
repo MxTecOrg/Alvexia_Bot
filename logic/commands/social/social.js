@@ -3,6 +3,8 @@ const fs = require("fs");
 const bot = require(config.DIRNAME + "/main.js");
 const { User, Hero, Op } = require(config.LOGIC + "/helpers/DB.js");
 require("./party/party.js");
+require("./castle/castle.js");
+require("./friends.js");
 
 const social = async (user_id, chat_id) => {
     const opts = {
@@ -11,7 +13,7 @@ const social = async (user_id, chat_id) => {
             keyboard: [
                 [
                     "👥 Grupo ",
-                    " Gremio 🔰"
+                    " Castillo 🏰"
                 ],
                 [
                     "🧙🏻‍♂️ Amigos",

@@ -48,10 +48,12 @@ const leave = async (user_id, chat_id) => {
     });
     
     for(let m of members){
-        const mem = await Hero.findAll({
-            
+        const mem = await User.findOne({
+            where: {
+                user_id : m
+            }
         });
-        bot.sendMessage()
+        bot.sendMessage(chat_id , "El heroe '" + hero.nickname + "' a dejado el grupo.");
     }
 
     const menu_str = "Has dejado el grupo";

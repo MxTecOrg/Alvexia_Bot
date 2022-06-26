@@ -6,6 +6,8 @@ require("./join.js");
 require("./create.js");
 require("./leave.js");
 require("./chat.js");
+require("./kick.js");
+const {status} = require("./status.js");
 
 const party = async (user_id, chat_id) => {
     const opts = {
@@ -33,16 +35,10 @@ const party = async (user_id, chat_id) => {
 
     if (!hero) return bot.sendMessage(chat_id, "Esta cuenta no existe , use el comando /start para crear una.");
     
-    const _party = await Party.findOne({
-        where: {
-            party_id : hero.party
-        }
-    });
-    
-
-    const menu_str = "👥 *Grupo:*\n\n" + 
-    "👥 : *" + (_party ? _party.name : "Ninguno") + "*" +
-    (_party ? "\n♥️ Estado : /sparty" : "");
+    const ustatus = await status(user_id , true);
+    const menu_str = "👥 *Grupo:*\n\n" +
+    (ustatus ? ustatus.msg.replace("♥️ *Estado del Grupo:*\n\n" , "") : "") +
+    (ustatus ? "\n♥️ Estado : /sparty" : "");
     bot.sendMessage(chat_id, menu_str, opts);
 };
 

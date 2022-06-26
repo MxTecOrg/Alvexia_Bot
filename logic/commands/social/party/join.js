@@ -144,10 +144,20 @@ const joinPt = async (data) => {
     
     const members = JSON.parse(cparty.members);
     
-    if(members.length > 15) return bot.sendMessage(mess_id , "El equipo ya se encuentra completo.");
+    if(members.length >= 15) return bot.sendMessage(mess_id , "El equipo ya se encuentra completo.");
     
     if(hero.status != "rest" || cparty.status != "rest") return bot.sendMessage(mess_id , "Para unirse al grupo se debe encontrar descansando.");
     if(hero.zone != cparty.zone) return bot.sendMessage(mess_id , "Debe encontrarse en la misma zona que el grupo para poder unirse.");
+    
+    for(let mem of members){
+        const m = await User.findOne({
+            where: {
+                user_id : m
+            }
+        });
+        if(!m) continue;
+        bot.sendMessage(m.chat_id , "El heroe '" + hero.nickname + "' se a unido al grupo.");
+    }
     
     members.push(user_id);
     

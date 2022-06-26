@@ -100,6 +100,12 @@ bot.on("callback_query", async (data) => {
                     }
                 });
                 
+                const refU = await User.findOne({
+                    where: {
+                        user_id : newUser[user_id].refBy
+                    }
+                });
+                
                 if(ref){
                     friends.refBy = newUser[user_id].refBy;
                     let refFriends = JSON.parse(ref.friends);
@@ -107,7 +113,7 @@ bot.on("callback_query", async (data) => {
                     ref.setData({
                         friends : refFriends
                     });
-                    bot.sendMessage(ref.chat_id, "El heroe '" + newUser[user_id].nickname + "' se a unido al mundo usando tu link de referencia.");
+                    bot.sendMessage(refU.chat_id, "El heroe '" + newUser[user_id].nickname + "' se a unido al mundo usando tu link de referencia.");
                 }
                 
                 const hero = await Hero.create({

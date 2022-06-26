@@ -138,11 +138,11 @@ const HeroModel = (DataTypes) => {
         },
         class: {
             type: DataTypes.STRING,
-                defaultValue: "na"
+                defaultValue: 'na'
         },
         expertice: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+            defaultValue: 'na'
         },
         attributes: {
             type: DataTypes.STRING,
@@ -186,19 +186,19 @@ const HeroModel = (DataTypes) => {
         },
         kingdom: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+            defaultValue: 'na'
         },
         castle: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+            defaultValue: 'na'
         },
         party: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+            defaultValue: 'na'
         },
         arena: {
             type: DataTypes.STRING,
-            defaultValue: "na"
+            defaultValue: 'na'
         },
         arena_time: {
             type: DataTypes.INTEGER,
@@ -222,11 +222,11 @@ const HeroModel = (DataTypes) => {
         },
         zone: {
             type: DataTypes.STRING,
-            defaultValue: "0_0"
+            defaultValue: 'na'
         },
         status: {
             type: DataTypes.STRING,
-            defaultValue: "rest"
+            defaultValue: 'na'
         }
     }
 }

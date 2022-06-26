@@ -15,7 +15,21 @@ const config = {
     REFERRAL: {
         gems: 5
     },
-    PA_LVL : 5
+    PA_LVL : 5,
+    GUARDS: {
+        alvexia: {
+            token : "API_TOKEN",
+            group: "@grupo"
+        },
+        lightborn : {
+            token: "API_TOKEN",
+            group: "@grupo"
+        },
+        alvexia: {
+            token: "API_TOKEN",
+            group: "@grupo"
+        }
+    }
 };
 
 module.exports = config;
